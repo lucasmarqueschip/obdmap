@@ -12,16 +12,23 @@
         #btn {
             font-size: 1.5rem
         }
+        .display{
+            display: grid;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Version: 0.0.4</h1>
-    <button id='btn' onclick="ConnectBluetooth()">Conectar</button>
-    <input type="text" id="service" placeholder="Service">
-    <input type="text" id="name" placeholder="Device">
-    <input type="text" id="namePrefix" placeholder="Device Prefix">
-    <div id="logs"></div>
+    <div class="display">
+
+        <h1>Version: 0.0.5</h1>
+        <input type="text" id="service" placeholder="Service">
+        <input type="text" id="name" value="OBD001910" placeholder="Device">
+        <input type="text" id="namePrefix" placeholder="Device Prefix">
+        <button id='btn' onclick="ConnectBluetooth()">Conectar</button>
+        <button id='btn' onclick="ReadServices()">Conectar</button>
+        <div id="logs"></div>
+    </div>
 
 
 
@@ -53,13 +60,10 @@
 
 
             bluetoothDevice = null;
-            
+
             navigator.bluetooth.requestDevice(options)
                 .then(device => {
-                    div.innerHTML += 'Promisse -ok' + '</br>'
-                    div.innerHTML += JSON.stringify(device) + '</br>'
                     bluetoothDevice = device;
-                    div.innerHTML += JSON.stringify(bluetoothDevice) + '</br>'
                     return connect();
                 })
                 .catch(error => {
@@ -70,7 +74,7 @@
 
 
 
-        function connect(name) {
+        function connect() {
             div.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
             return bluetoothDevice.gatt.connect()
                 .then(server => {
@@ -78,6 +82,59 @@
                     div.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
                     div.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
                 });
+        }
+
+        function ReadServices() {
+            // Validate services UUID entered by user first.
+            // let optionalServices = document.querySelector('#optionalServices').value
+            //     .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
+            //     .filter(s => s && BluetoothUUID.getService);
+
+                div.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
+            navigator.bluetooth.requestDevice({
+                // filters: [...] <- Prefer filters to save energy & show relevant devices.
+                acceptAllDevices: true,
+                // optionalServices: optionalServices
+            })
+                .then(device => {
+                    div.innerHTML += 'Conectando server...' + JSON.stringify(options) + '</br>'
+                    return device.gatt.connect();
+                })
+                .then(server => {
+                    // Note that we could also get all services that match a specific UUID by
+                    // passing it to getPrimaryServices().
+                    div.innerHTML += 'Servicos...' + JSON.stringify(options) + '</br>'
+                    return server.getPrimaryServices();
+                })
+                .then(services => {
+                    div.innerHTML += 'Caracteristicas...' + JSON.stringify(options) + '</br>'
+                    let queue = Promise.resolve();
+                    services.forEach(service => {
+                        queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+                            div.innerHTML += ('> Service: ' + service.uuid);
+                            characteristics.forEach(characteristic => {
+                                div.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' +
+                                    getSupportedProperties(characteristic));
+                            });
+                        }));
+                    });
+                    return queue;
+                })
+                .catch(error => {
+                    ldiv.innerHTML += ('Argh! ' + error);
+                });
+        }
+
+        /* Utils */
+
+        function getSupportedProperties(characteristic) {
+            let supportedProperties = [];
+            for (const p in characteristic.properties) {
+                if (characteristic.properties[p] === true) {
+                    supportedProperties.push(p.toUpperCase());
+                }
+            }
+            return '[' + supportedProperties.join(', ') + ']';
         }
     </script>
 
