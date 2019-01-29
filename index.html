@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.7</h1>
+        <h1>Version: 0.0.8</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -86,11 +86,12 @@
 
         function ReadServices() {
             // Validate services UUID entered by user first.
-            // let optionalServices = document.querySelector('#optionalServices').value
-            //     .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
-            //     .filter(s => s && BluetoothUUID.getService);
+            let service = '0000FEFB-0000-1000-8000-00805F9B34FB'
+             let optionalServices = service
+                 .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
+                 .filter(s => s && BluetoothUUID.getService);
 
-            let optionalServices = '0000FEFB-0000-1000-8000-00805F9B34FB'
+            
 
             div.innerHTML += 'Conectando...' + '</br>'
             navigator.bluetooth.requestDevice({
