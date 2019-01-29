@@ -17,9 +17,9 @@
 
 <body>
     <button id='btn' onclick="ConnectBluetooth()">Conectar</button>
-    <input type="text" id="service">
-    <input type="text" id="name">
-    <input type="text" id="namePrefix">
+    <input type="text" id="service" placeholder="Service">
+    <input type="text" id="name" placeholder="Device">
+    <input type="text" id="namePrefix" placeholder="Devide Prefix">
     <div id="logs"></div>
 
 
@@ -58,9 +58,7 @@
                 .catch(error => {
                     div.innerHTML += 'Error: ' + error + '</br>'
                 });
-            navigator.bluetooth.requestDevice({
-                filters: [{ name: "OBD001910" }]
-            })
+
         }
 
 
