@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <h1>Version: 0.0.3</h1>
+    <h1>Version: 0.0.4</h1>
     <button id='btn' onclick="ConnectBluetooth()">Conectar</button>
     <input type="text" id="service" placeholder="Service">
     <input type="text" id="name" placeholder="Device">
@@ -71,12 +71,12 @@
 
 
         function connect(name) {
-            div.innerHTML += 'Conectando em ' + device.name + '</br>'
+            div.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
             return bluetoothDevice.gatt.connect()
                 .then(server => {
-                    div.innerHTML += 'Conectado: ' + device.name + '</br>'
-                    div.innerHTML += 'ID: ' + device.id + '</br>'
-                    div.innerHTML += 'Connected: ' + device.gatt.connected + '</br>'
+                    div.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+                    div.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+                    div.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
                 });
         }
     </script>
