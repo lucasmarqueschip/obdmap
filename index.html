@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.6</h1>
+        <h1>Version: 0.0.7</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -96,7 +96,7 @@
             navigator.bluetooth.requestDevice({
                 // filters: [...] <- Prefer filters to save energy & show relevant devices.
                 acceptAllDevices: true,
-                // optionalServices: optionalServices
+                optionalServices: optionalServices
             })
                 .then(device => {
                     div.innerHTML += 'Conectando server...' + '</br>'
