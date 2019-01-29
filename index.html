@@ -19,7 +19,7 @@
     <button id='btn' onclick="ConnectBluetooth()">Conectar</button>
     <input type="text" id="service" placeholder="Service">
     <input type="text" id="name" placeholder="Device">
-    <input type="text" id="namePrefix" placeholder="Devide Prefix">
+    <input type="text" id="namePrefix" placeholder="Device Prefix">
     <div id="logs"></div>
 
 
@@ -49,9 +49,12 @@
                 options.filters.push({ namePrefix: filterNamePrefix });
             }
             div.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
+
+
             bluetoothDevice = null;
             navigator.bluetooth.requestDevice(options)
                 .then(device => {
+                    div.innerHTML += JSON.stringify(device)
                     bluetoothDevice = device;
                     return connect();
                 })
@@ -60,8 +63,6 @@
                 });
 
         }
-
-
 
 
 
