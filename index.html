@@ -48,7 +48,7 @@
             if (filterNamePrefix) {
                 options.filters.push({ namePrefix: filterNamePrefix });
             }
-            div.innerHTML += 'Conectando...</br>'
+            div.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
             bluetoothDevice = null;
             navigator.bluetooth.requestDevice(options)
                 .then(device => {
