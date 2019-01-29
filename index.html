@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <h1>Version: 0.0.1</h1>
+    <h1>Version: 0.0.2</h1>
     <button id='btn' onclick="ConnectBluetooth()">Conectar</button>
     <input type="text" id="service" placeholder="Service">
     <input type="text" id="name" placeholder="Device">
@@ -55,6 +55,7 @@
             bluetoothDevice = null;
             navigator.bluetooth.requestDevice(options)
                 .then(device => {
+                    div.innerHTML += 'Promisse -ok' + '</br>'
                     div.innerHTML += JSON.stringify(device)
                     bluetoothDevice = device;
                     return connect();
