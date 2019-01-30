@@ -1,6 +1,6 @@
 "use strict";
 
-// var bluetoothDevice;
+ var bluetoothDevice;
 
 
 
@@ -13,14 +13,14 @@ function ConnectBluetooth(name, log, btn) {
     log.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
     navigator.bluetooth.requestDevice(options)
         .then(device => {
-            // bluetoothDevice = device;
+             bluetoothDevice = device;
             //return this.connect(device, log, btn);
-            log.innerHTML += 'Conectando em ' + device.name + '</br>'
-            return device.gatt.connect()
+            log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
+            return bluetoothDevice.gatt.connect()
                 .then(server => {
-                    log.innerHTML += 'Conectado: ' + device.name + '</br>'
-                    log.innerHTML += 'ID: ' + device.id + '</br>'
-                    log.innerHTML += 'Connected: ' + device.gatt.connected + '</br>'
+                    log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+                    log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+                    log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
                     btnReadService.disabled = false
 
                 });
