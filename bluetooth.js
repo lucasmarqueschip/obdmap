@@ -16,8 +16,8 @@ function ConnectBluetooth(name) {
     }
 
     log.innerHTML += 'Request Device...' + JSON.stringify({ optionalServices: optionalServices }) + '</br>'
-    navigator.bluetooth.requestDevice({ acceptAllDevices: true }, { optionalServices: optionalServices })
-        .then(device => {
+    navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: optionalServices })
+    .then(device => {
             bluetoothDevice = device;
             log.innerHTML += 'Conectando: ' + bluetoothDevice.name + '</br>'
             return bluetoothDevice.gatt.connect()
