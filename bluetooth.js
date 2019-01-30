@@ -4,20 +4,28 @@ var bluetoothDevice
 let queueServices = []
 
 function ConnectBluetooth(name) {
+    
+    vs.innerHTML = 'Version: 0.0.43 - ok'
+
+
+
     log.innerHTML = `Criando conexao: ${name} <br/>`
-    let options = { filters: [] };
     let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
     let optionalServices = serviceUUiD
         .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
         .filter(s => s && BluetoothUUID.getService);
 
+    // let options = { filters: [] }
+    let options = { filters: [], optionalServices: optionalServices }
     if (name) {
         options.filters.push({ name })
     }
+    // let opt2 = { acceptAllDevices: true, optionalServices: optionalServices }
 
-    log.innerHTML += 'Request Device...' + JSON.stringify({ optionalServices: optionalServices }) + '</br>'
-    navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: optionalServices })
-    .then(device => {
+    log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
+    navigator.bluetooth.requestDevice(options)
+        // navigator.bluetooth.requestDevice()
+        .then(device => {
             bluetoothDevice = device;
             log.innerHTML += 'Conectando: ' + bluetoothDevice.name + '</br>'
             return bluetoothDevice.gatt.connect()
@@ -36,7 +44,7 @@ function ConnectBluetooth(name) {
                     log.innerHTML += ('> Service: ' + service.uuid);
                     characteristics.forEach(characteristic => {
                         let sup = getSupportedProperties(characteristic)
-                        // log.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
+                        log.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
                         queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
                     });
                 }));
