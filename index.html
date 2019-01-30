@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.12</h1>
+        <h1>Version: 0.0.13</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -36,7 +36,7 @@
     <script>
         var bluetoothDevice;
         var div = document.getElementById('logs')
-        let queueServices = []
+        let queueServices = ''
         function ConnectBluetooth() {
 
             let options = { filters: [] };
@@ -120,7 +120,7 @@
                             characteristics.forEach(characteristic => {
                                 let sup = getSupportedProperties(characteristic)
                                 div.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
-                                queueServices.push = characteristic.uuid + ' ' + sup
+                                queueServices += characteristic.uuid + ' ' + sup + '<br/>'
                             });
                         }));
                     });
@@ -134,7 +134,8 @@
         function RX(){
             ReadServices()
             
-            div.innerHTML += 'RX INIT...queue: ' + queueServices + '</br>'
+            div.innerHTML += 'RX INIT..</br>'
+            div.innerHTML += 'Queue: ' + queueServices + '</br>'
             
         }
 
