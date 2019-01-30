@@ -1,4 +1,3 @@
-let bluetooth
 var log = document.getElementById('logs')
 var divBtn = document.getElementById('btnDiv')
 
