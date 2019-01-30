@@ -4,8 +4,8 @@ var bluetoothDevice
 let queueServices = []
 
 function ConnectBluetooth(name) {
-    
-    vs.innerHTML = 'Version: 0.0.43 - ok'
+
+    vs.innerHTML = 'Version: 0.0.44 - ok'
 
 
 
@@ -22,7 +22,7 @@ function ConnectBluetooth(name) {
     }
     // let opt2 = { acceptAllDevices: true, optionalServices: optionalServices }
 
-    log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
+    // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
     navigator.bluetooth.requestDevice(options)
         // navigator.bluetooth.requestDevice()
         .then(device => {
@@ -44,12 +44,12 @@ function ConnectBluetooth(name) {
                     log.innerHTML += ('> Service: ' + service.uuid);
                     characteristics.forEach(characteristic => {
                         let sup = getSupportedProperties(characteristic)
-                        log.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
+                        
                         queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
                     });
                 }));
             });
-
+            log.innerHTML += ('>> var: ' + JSON.stringify(queueServices));
             queueServices.forEach((element) => {
                 divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
                                 'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
