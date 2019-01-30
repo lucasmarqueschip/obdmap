@@ -1,6 +1,6 @@
 "use strict";
 
- var bluetoothDevice;
+var bluetoothDevice;
 
 
 
@@ -10,19 +10,38 @@ function ConnectBluetooth(name, log, btn) {
     if (name) {
         options.filters.push({ name });
     }
-    log.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
+    // log.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
     navigator.bluetooth.requestDevice(options)
         .then(device => {
-             bluetoothDevice = device;
+            bluetoothDevice = device;
             //return this.connect(device, log, btn);
             log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
             return bluetoothDevice.gatt.connect()
                 .then(server => {
                     log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
                     log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
-                    log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
+                    log.innerHTML += 'Pareado: ' + bluetoothDevice.gatt.connected + '</br>'
                     btnReadService.disabled = false
-
+                    return server.getPrimaryServices()
+                        .then(services => {
+                            log.innerHTML += 'Lendo Serviços...' + '</br>'
+                            let queue = Promise.resolve();
+                            services.forEach(service => {
+                                queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+                                    log.innerHTML += ('> Service: ' + service.uuid);
+                                    characteristics.forEach(characteristic => {
+                                        let sup = getSupportedProperties(characteristic)
+                                        // log.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
+                                        queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
+                                    });
+                                }));
+                            });
+                            document.getElementById('btnRX').disabled = false
+                            return queue;
+                        })
+                        .catch(error => {
+                            log.innerHTML += ('Argh! ' + error);
+                        });
                 });
         })
         .catch(error => {
@@ -45,9 +64,33 @@ function ConnectBluetooth(name, log, btn) {
 //         });
 // }
 
-function ReadServices(bluetoothDevice) {
-    bluetoothDevice.gatt.connect()
-}
+// function ReadServices(bluetoothDevice) {
+//     bluetoothDevice.gatt.connect()
+//         .then(server => {
+//             return server.getPrimaryServices();
+//         })
+//         .then(services => {
+//             div.innerHTML += 'Lendo Serviços...' + '</br>'
+//             let queue = Promise.resolve();
+//             services.forEach(service => {
+//                 queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+//                     div.innerHTML += ('> Service: ' + service.uuid);
+//                     characteristics.forEach(characteristic => {
+//                         let sup = getSupportedProperties(characteristic)
+//                         // div.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
+//                         queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
+//                     });
+//                 }));
+//             });
+//             document.getElementById('btnRX').disabled = false
+//             return queue;
+//         })
+//         .catch(error => {
+//             div.innerHTML += ('Argh! ' + error);
+//         });
+
+// });
+// }
 
 
 
@@ -140,12 +183,12 @@ function ReadServices(bluetoothDevice) {
 
 // /* Utils */
 
-// function getSupportedProperties(characteristic) {
-//     let supportedProperties = [];
-//     for (const p in characteristic.properties) {
-//         if (characteristic.properties[p] === true) {
-//             supportedProperties.push(p.toUpperCase());
-//         }
-//     }
-//     return '[' + supportedProperties.join(', ') + ']';
-// }
+function getSupportedProperties(characteristic) {
+    let supportedProperties = [];
+    for (const p in characteristic.properties) {
+        if (characteristic.properties[p] === true) {
+            supportedProperties.push(p.toUpperCase());
+        }
+    }
+    return '[' + supportedProperties.join(', ') + ']';
+}
