@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.44?</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.45</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -34,7 +34,89 @@
 
 </body>
 <script src="./index.js"></script>
-<script src="./bluetooth.js"></script>
+<!-- <script src="./bluetooth.js"></script> -->
+
+<script>
+"use strict";
+
+var bluetoothDevice
+let queueServices = []
+
+function ConnectBluetooth(name) {
+
+    vs.innerHTML = 'Version: 0.0.45 - ok'
+
+
+
+    log.innerHTML = `Criando conexao: ${name} <br/>`
+    let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
+    let optionalServices = serviceUUiD
+        .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
+        .filter(s => s && BluetoothUUID.getService);
+
+    // let options = { filters: [] }
+    let options = { filters: [], optionalServices: optionalServices }
+    if (name) {
+        options.filters.push({ name })
+    }
+    // let opt2 = { acceptAllDevices: true, optionalServices: optionalServices }
+
+    // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
+    navigator.bluetooth.requestDevice(options)
+        // navigator.bluetooth.requestDevice()
+        .then(device => {
+            bluetoothDevice = device;
+            log.innerHTML += 'Conectando: ' + bluetoothDevice.name + '</br>'
+            return bluetoothDevice.gatt.connect()
+        })
+        .then(server => {
+            log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+            log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+            log.innerHTML += 'Pareado: ' + bluetoothDevice.gatt.connected + '</br>'
+            log.innerHTML += 'Get services...' + '</br>'
+            return server.getPrimaryServices()
+        })
+        .then(services => {
+            let queue = Promise.resolve();
+            services.forEach(service => {
+                queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+                    log.innerHTML += ('> Service: ' + service.uuid);
+                    characteristics.forEach(characteristic => {
+                        let sup = getSupportedProperties(characteristic)
+                        
+                        queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
+                    });
+                }));
+            });
+            log.innerHTML += ('>> var: ' + JSON.stringify(queueServices));
+            queueServices.forEach((element) => {
+                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
+                                'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
+            })
+
+            return queue;
+        })
+        .catch(error => {
+            log.innerHTML += ('Argh! ' + error);
+        })
+
+
+}
+
+
+// /* Utils */
+
+function getSupportedProperties(characteristic) {
+    let supportedProperties = [];
+    for (const p in characteristic.properties) {
+        if (characteristic.properties[p] === true) {
+            supportedProperties.push(p.toUpperCase());
+        }
+    }
+    return '[' + supportedProperties.join(', ') + ']';
+}
+
+</script>
 
 
 </html>
