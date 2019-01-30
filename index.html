@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.18</h1>
+        <h1>Version: 0.0.19</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -29,8 +29,7 @@
         <div class="display" id="btnDiv">
             <button class="btn" id='btnConnect' onclick="ConnectBluetooth()">Conectar</button>
             <button class="btn" id='btnReadService' onclick="ReadServices()">Ler Serviços</button>
-            <button class="btn" id='btnRX' onclick="RX()" >Receber</button>
-            <button class="btn" id='btnRX' onclick="Teste()">Teste</button>
+            <button class="btn" id='btnRX' onclick="RX()" disabled>Receber</button>
         </div>
         <div id="logs"></div>
     </div>
@@ -137,11 +136,11 @@
         }
 
         function RX() {
-            ReadServices()
-                .then(q =>{
-                    div.innerHTML += 'RX INIT..</br>'
-                    // disabled
-                })
+            // ReadServices()
+            //     .then(q =>{
+            //         div.innerHTML += 'RX INIT..</br>'
+            //          disabled
+            //     })
 
             div.innerHTML += 'RX INIT..</br>'
             div.innerHTML += 'Queue: ' + queueServices + '</br>'
