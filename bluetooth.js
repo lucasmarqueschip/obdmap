@@ -5,7 +5,6 @@
 class Bluetooth {
 
     constructor(name, log, btn) {
-        this.connect.bind(this)
         return this.ConnectBluetooth(name, log, btn)
     }
 
@@ -15,7 +14,7 @@ class Bluetooth {
         let options = { filters: [] };
         log.innerHTML += `Criando conexao: ${name} <br/>`
 
-        
+
         // let filterService = document.querySelector('#service').value;
         // if (filterService.startsWith('0x')) {
         //     filterService = parseInt(filterService);
@@ -38,27 +37,36 @@ class Bluetooth {
         navigator.bluetooth.requestDevice(options)
             .then(device => {
                 // bluetoothDevice = device;
-                return this.connect(device, log, btn);
+                //return this.connect(device, log, btn);
+                log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
+                return device.gatt.connect()
+                    .then(server => {
+                        log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+                        log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+                        log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
+                        btnReadService.disabled = false
+
+                    });
             })
             .catch(error => {
-                
+
                 log.innerHTML += 'Error: ' + error + '</br>'
             });
     }
 
 
 
-    connect(bluetoothDevice, log, btn) {
-        log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
-        return bluetoothDevice.gatt.connect()
-            .then(server => {
-                log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
-                log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
-                log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
-                btnReadService.disabled = false
-                
-            });
-    }
+    // connect(bluetoothDevice, log, btn) {
+    //     log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
+    //     return bluetoothDevice.gatt.connect()
+    //         .then(server => {
+    //             log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+    //             log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+    //             log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
+    //             btnReadService.disabled = false
+
+    //         });
+    // }
 
     ReadServices(bluetoothDevice) {
         bluetoothDevice.gatt.connect()
