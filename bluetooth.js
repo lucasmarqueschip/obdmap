@@ -14,9 +14,9 @@ function ConnectBluetooth(name) {
     if (name) {
         options.filters.push({ name })
     }
-    options.push(optionalServices)
-    log.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
-    navigator.bluetooth.requestDevice(options)
+    
+    log.innerHTML += 'Conectando...' + JSON.stringify({optionalServices: optionalServices}) + '</br>'
+    navigator.bluetooth.requestDevice(options, {optionalServices: optionalServices})
         .then(device => {
             bluetoothDevice = device;
             //return this.connect(device, log, btn);
