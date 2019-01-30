@@ -1,10 +1,10 @@
 "use strict";
 
-var bluetoothDevice;
+var bluetoothDevice
+let queueServices = []
+var divBtn
 
-
-
-function ConnectBluetooth(name, log, btn) {
+function ConnectBluetooth(name) {
     let options = { filters: [] };
     log.innerHTML = `Criando conexao: ${name} <br/>`
     if (name) {
@@ -21,7 +21,7 @@ function ConnectBluetooth(name, log, btn) {
                     log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
                     log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
                     log.innerHTML += 'Pareado: ' + bluetoothDevice.gatt.connected + '</br>'
-                    btnReadService.disabled = false
+
                     return server.getPrimaryServices()
                         .then(services => {
                             log.innerHTML += 'Lendo Serviços...' + '</br>'
@@ -36,7 +36,12 @@ function ConnectBluetooth(name, log, btn) {
                                     });
                                 }));
                             });
-                            document.getElementById('btnRX').disabled = false
+                           
+                            queueServices.forEach((element) => {
+                                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
+                                'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
+                            });
+
                             return queue;
                         })
                         .catch(error => {
