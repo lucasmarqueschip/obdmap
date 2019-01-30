@@ -38,7 +38,7 @@ class Bluetooth {
         navigator.bluetooth.requestDevice(options)
             .then(device => {
                 // bluetoothDevice = device;
-                return Bluetooth.connect(device, log, btn);
+                return this.connect(device, log, btn);
             })
             .catch(error => {
                 
