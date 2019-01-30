@@ -5,36 +5,34 @@ var logHTML = ''
 
 class Bluetooth {
 
-    constructor() {
-        return this.ConnectBluetooth()
+    constructor(name) {
+        return this.ConnectBluetooth(name)
     }
-    
-    ConnectBluetooth() {
+
+    ConnectBluetooth(name) {
         logHTML = '';
         let options = { filters: [] };
+        div.innerHTML += `Criando conexao: ${name} <br/>`
 
-        let filterService = document.querySelector('#service').value;
-        if (filterService.startsWith('0x')) {
-            filterService = parseInt(filterService);
-        }
-        if (filterService) {
-            options.filters.push({ services: [filterService] });
+        // let filterService = document.querySelector('#service').value;
+        // if (filterService.startsWith('0x')) {
+        //     filterService = parseInt(filterService);
+        // }
+        // if (filterService) {
+        //     options.filters.push({ services: [filterService] });
+        // }
+
+        // let filterName = document.querySelector('#name').value;
+        if (name) {
+            options.filters.push({ name });
         }
 
-        let filterName = document.querySelector('#name').value;
-        if (filterName) {
-            options.filters.push({ name: filterName });
-        }
-
-        let filterNamePrefix = document.querySelector('#namePrefix').value;
-        if (filterNamePrefix) {
-            options.filters.push({ namePrefix: filterNamePrefix });
-        }
+        // let filterNamePrefix = document.querySelector('#namePrefix').value;
+        // if (filterNamePrefix) {
+        //     options.filters.push({ namePrefix: filterNamePrefix });
+        // }
         logHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
-
-
         // bluetoothDevice = null;
-
         navigator.bluetooth.requestDevice(options)
             .then(device => {
                 // bluetoothDevice = device;
@@ -43,8 +41,6 @@ class Bluetooth {
             .catch(error => {
                 logHTML += 'Error: ' + error + '</br>'
             });
-
-
     }
 
 
