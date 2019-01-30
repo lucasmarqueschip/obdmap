@@ -1,18 +1,18 @@
 "use strict";
 
-var logHTML = ''
 // var bluetoothDevice;
 
 class Bluetooth {
 
-    constructor(name) {
-        return this.ConnectBluetooth(name)
+    constructor(name, log, btn) {
+        return this.ConnectBluetooth(name, log, btn)
     }
 
-    ConnectBluetooth(name) {
-        logHTML = '';
+    ConnectBluetooth(name, log, btn) {
+        log.innerHTML = ''
+
         let options = { filters: [] };
-        div.innerHTML += `Criando conexao: ${name} <br/>`
+        log.innerHTML += `Criando conexao: ${name} <br/>`
 
         // let filterService = document.querySelector('#service').value;
         // if (filterService.startsWith('0x')) {
@@ -31,31 +31,35 @@ class Bluetooth {
         // if (filterNamePrefix) {
         //     options.filters.push({ namePrefix: filterNamePrefix });
         // }
-        logHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
+        log.innerHTML += 'Conectando...' + JSON.stringify(options) + '</br>'
         // bluetoothDevice = null;
         navigator.bluetooth.requestDevice(options)
             .then(device => {
                 // bluetoothDevice = device;
-                return connect(device);
+                return connect(device, log, btn);
             })
             .catch(error => {
-                logHTML += 'Error: ' + error + '</br>'
+                log.innerHTML += 'Error: ' + error + '</br>'
             });
     }
 
 
 
-    connect(bluetoothDevice) {
-        logHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
+    connect(bluetoothDevice, log, btn) {
+        log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
         return bluetoothDevice.gatt.connect()
             .then(server => {
-                logHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
-                logHTML += 'ID: ' + bluetoothDevice.id + '</br>'
-                logHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
+                log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+                log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+                log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
+                btnReadService.disabled = false
+                
             });
     }
 
-
+    ReadServices(bluetoothDevice) {
+        bluetoothDevice.gatt.connect()
+    }
 
 }
 

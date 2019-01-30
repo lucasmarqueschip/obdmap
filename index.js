@@ -5,13 +5,10 @@ var btnReadService = document.getElementById('btnReadService')
 function btnConnectClick() {
   let nameDevice = document.querySelector('#name').value;
   div.innerHTML += 'Botao pressionado<br/>'
-  bluetooth = new Bluetooth(nameDevice)
-  div.innerHTML += logHTML
-  div.innerHTML += 'Device: ' + JSON.stringify(bluetooth)
-  btnReadService.disabled = false
+  bluetooth = new Bluetooth(nameDevice, div, btnReadService)
 }
 
-function btnReadServiceClick(){
+function btnReadServiceClick() {
 
 }
 
