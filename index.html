@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.20</h1>
+        <h1>Version: 0.0.21</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -29,7 +29,7 @@
         <div class="display" id="btnDiv">
             <button class="btn" id='btnConnect' onclick="ConnectBluetooth()">Conectar</button>
             <button class="btn" id='btnReadService' onclick="ReadServices()">Ler Serviços</button>
-            <button class="btn" id='btnRX' onclick="Teste()">Receber</button>
+            <button class="btn" id='btnRX' onclick="RX()" disabled>Receber</button>
         </div>
         <div id="logs"></div>
     </div>
@@ -122,7 +122,7 @@
                             div.innerHTML += ('> Service: ' + service.uuid);
                             characteristics.forEach(characteristic => {
                                 let sup = getSupportedProperties(characteristic)
-                                div.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
+                                // div.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
                                 queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
                             });
                         }));
@@ -148,7 +148,7 @@
             var divBtn = document.getElementById('btnDiv')
             queueServices.forEach((element, ind) => {
                 divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
-                'ServiceOf("${element.split(' ')[0]}")'>${element}'</button>'`
+                'ServiceOf("${element.split(' ')[0]}")'>${element}'</button>`
             });
 
         }
