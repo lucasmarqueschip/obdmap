@@ -15,12 +15,12 @@ function ConnectBluetooth(name, log, btn) {
         .then(device => {
             // bluetoothDevice = device;
             //return this.connect(device, log, btn);
-            log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
+            log.innerHTML += 'Conectando em ' + device.name + '</br>'
             return device.gatt.connect()
                 .then(server => {
-                    log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
-                    log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
-                    log.innerHTML += 'Connected: ' + bluetoothDevice.gatt.connected + '</br>'
+                    log.innerHTML += 'Conectado: ' + device.name + '</br>'
+                    log.innerHTML += 'ID: ' + device.id + '</br>'
+                    log.innerHTML += 'Connected: ' + device.gatt.connected + '</br>'
                     btnReadService.disabled = false
 
                 });
