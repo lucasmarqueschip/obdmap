@@ -21,13 +21,13 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.13</h1>
+        <h1>Version: 0.0.14</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
         <button class = "btn" id='btnConnect' onclick="ConnectBluetooth()">Conectar</button>
-        <button class = "btn" id='btnReadService' onclick="ReadServices()">Ler Serviços</button>
-        <button class = "btn" id='btnRX' onclick="RX()">Receber</button>
+        <button class = "btn" id='btnReadService' onclick="ReadServices()" >Ler Serviços</button>
+        <button class = "btn" id='btnRX' onclick="RX()" disable>Receber</button>
         <div id="logs"></div>
     </div>
 
@@ -132,12 +132,28 @@
         }
 
         function RX(){
-            ReadServices()
-            
+            //ReadServices()
+            document.getElementById('btnRX').disabled = true
             div.innerHTML += 'RX INIT..</br>'
             div.innerHTML += 'Queue: ' + queueServices + '</br>'
             
         }
+
+        function Service1(){
+
+        }
+
+        function Service2(){
+            
+        }
+        function Service3(){
+            
+        }
+        function Service4(){
+            
+        }
+
+
 
         /* Utils */
 
