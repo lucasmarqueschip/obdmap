@@ -21,13 +21,16 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.14</h1>
+        <h1>Version: 0.0.15</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
-        <button class = "btn" id='btnConnect' onclick="ConnectBluetooth()">Conectar</button>
-        <button class = "btn" id='btnReadService' onclick="ReadServices()" >Ler Serviços</button>
-        <button class = "btn" id='btnRX' onclick="RX()" disable>Receber</button>
+
+        <div class="div" id="btnDiv">
+            <button class = "btn" id='btnConnect' onclick="ConnectBluetooth()">Conectar</button>
+            <button class = "btn" id='btnReadService' onclick="ReadServices()" >Ler Serviços</button>
+            <button class = "btn" id='btnRX' onclick="RX()" disabled >Receber</button>
+        </div>
         <div id="logs"></div>
     </div>
 
@@ -124,6 +127,7 @@
                             });
                         }));
                     });
+                    document.getElementById('btnRX').disabled = false
                     return queue;
                 })
                 .catch(error => {
@@ -133,14 +137,17 @@
 
         function RX(){
             //ReadServices()
-            document.getElementById('btnRX').disabled = true
+            
             div.innerHTML += 'RX INIT..</br>'
             div.innerHTML += 'Queue: ' + queueServices + '</br>'
+
+            var divBtn = document.getElementById('btnDiv').innerHTML =  ''
+            div.innerHTML += "<button class = 'btn' id='btnRX' onclick='Service1()' disable>Receber</button>"
             
         }
 
         function Service1(){
-
+            
         }
 
         function Service2(){
