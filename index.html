@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.45</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.46</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -43,11 +43,6 @@ var bluetoothDevice
 let queueServices = []
 
 function ConnectBluetooth(name) {
-
-    vs.innerHTML = 'Version: 0.0.45 - ok'
-
-
-
     log.innerHTML = `Criando conexao: ${name} <br/>`
     let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
     let optionalServices = serviceUUiD
@@ -59,11 +54,8 @@ function ConnectBluetooth(name) {
     if (name) {
         options.filters.push({ name })
     }
-    // let opt2 = { acceptAllDevices: true, optionalServices: optionalServices }
-
     // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
     navigator.bluetooth.requestDevice(options)
-        // navigator.bluetooth.requestDevice()
         .then(device => {
             bluetoothDevice = device;
             log.innerHTML += 'Conectando: ' + bluetoothDevice.name + '</br>'
@@ -84,16 +76,13 @@ function ConnectBluetooth(name) {
                     characteristics.forEach(characteristic => {
                         let sup = getSupportedProperties(characteristic)
                         
-                        queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
+                        let element = characteristic.uuid + ' ' + sup + '<br/>'
+                        divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
+                                'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
+                        //queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
                     });
                 }));
             });
-            log.innerHTML += ('>> var: ' + JSON.stringify(queueServices));
-            queueServices.forEach((element) => {
-                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
-                                'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
-            })
-
             return queue;
         })
         .catch(error => {
