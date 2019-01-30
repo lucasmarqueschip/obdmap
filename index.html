@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.19</h1>
+        <h1>Version: 0.0.20</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -29,7 +29,7 @@
         <div class="display" id="btnDiv">
             <button class="btn" id='btnConnect' onclick="ConnectBluetooth()">Conectar</button>
             <button class="btn" id='btnReadService' onclick="ReadServices()">Ler Serviços</button>
-            <button class="btn" id='btnRX' onclick="RX()" disabled>Receber</button>
+            <button class="btn" id='btnRX' onclick="Teste()">Receber</button>
         </div>
         <div id="logs"></div>
     </div>
@@ -147,23 +147,25 @@
 
             var divBtn = document.getElementById('btnDiv')
             queueServices.forEach((element, ind) => {
-                divBtn.innerHTML += "<button class = 'btn' id='btnRX' onclick='ServiceOf(" +
-                    element.split('[')[0] + ")' >" + element + "</button>"
+                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
+                'ServiceOf("${element.split(' ')[0]}")'>${element}'</button>'`
             });
 
         }
 
-        function ServiceOf(uuid, ) {
-            div.innerHTML += 'Servico ' + uuid + 'clickado</br>'
+        function ServiceOf(uuid) {
+            div.innerHTML += 'Servico ' + uuid + ' clickado</br>'
         }
 
 
         function Teste() {
-            let at = ["0000[teste]", "0001[teste]", "0002[teste]"]
+            let at = ["00000001-0000-1000-8000-00805f9b34fb [teste]",
+                "00000002-0000-1000-8000-00805f9b34fb [teste]",
+                "00000003-0000-1000-8000-00805f9b34fb [teste]"]
             var divBtn = document.getElementById('btnDiv')
             at.forEach((element, ind) => {
-                divBtn.innerHTML += "<button class = 'btn' id='btnRX' onclick='ServiceOf(" +
-                    element.split('[')[0] + ")' >" + element + "</button>"
+                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
+                'ServiceOf("${element.split(' ')[0]}")' >${element}'</button>'`
             });
 
         }
