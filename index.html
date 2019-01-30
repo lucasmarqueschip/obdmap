@@ -21,7 +21,7 @@
 <body>
     <div class="display">
 
-        <h1>Version: 0.0.11</h1>
+        <h1>Version: 0.0.12</h1>
         <input type="text" id="service" placeholder="Service">
         <input type="text" id="name" value="OBD001910" placeholder="Device">
         <input type="text" id="namePrefix" placeholder="Device Prefix">
@@ -132,10 +132,10 @@
         }
 
         function RX(){
-            let queue = ReadServices()
-            queueServices.forEach(element => {
-                div.innerHTML += 'RX INIT...queue: ' + element + '</br>'
-            });            
+            ReadServices()
+            
+            div.innerHTML += 'RX INIT...queue: ' + queueServices + '</br>'
+            
         }
 
         /* Utils */
