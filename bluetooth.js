@@ -15,52 +15,45 @@ function ConnectBluetooth(name) {
         options.filters.push({ name })
     }
 
-    log.innerHTML += 'Conectando...' + JSON.stringify({ optionalServices: optionalServices }) + '</br>'
-    navigator.bluetooth.requestDevice(
-        { acceptAllDevices: true },
-        { optionalServices: optionalServices }
-    )
+    log.innerHTML += 'Request Device...' + JSON.stringify({ optionalServices: optionalServices }) + '</br>'
+    navigator.bluetooth.requestDevice({ acceptAllDevices: true }, { optionalServices: optionalServices })
         .then(device => {
             bluetoothDevice = device;
-            //return this.connect(device, log, btn);
-            log.innerHTML += 'Conectando em ' + bluetoothDevice.name + '</br>'
+            log.innerHTML += 'Conectando: ' + bluetoothDevice.name + '</br>'
             return bluetoothDevice.gatt.connect()
-                .then(server => {
-                    log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
-                    log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
-                    log.innerHTML += 'Pareado: ' + bluetoothDevice.gatt.connected + '</br>'
+        })
+        .then(server => {
+            log.innerHTML += 'Conectado: ' + bluetoothDevice.name + '</br>'
+            log.innerHTML += 'ID: ' + bluetoothDevice.id + '</br>'
+            log.innerHTML += 'Pareado: ' + bluetoothDevice.gatt.connected + '</br>'
+            log.innerHTML += 'Get services...' + '</br>'
+            return server.getPrimaryServices()
+        })
+        .then(services => {
+            let queue = Promise.resolve();
+            services.forEach(service => {
+                queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
+                    log.innerHTML += ('> Service: ' + service.uuid);
+                    characteristics.forEach(characteristic => {
+                        let sup = getSupportedProperties(characteristic)
+                        // log.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
+                        queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
+                    });
+                }));
+            });
 
-                    return server.getPrimaryServices()
-                        .then(services => {
-                            log.innerHTML += 'Get services...' + '</br>'
-                            let queue = Promise.resolve();
-                            services.forEach(service => {
-                                queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
-                                    log.innerHTML += ('> Service: ' + service.uuid);
-                                    characteristics.forEach(characteristic => {
-                                        let sup = getSupportedProperties(characteristic)
-                                        // log.innerHTML += ('>> Characteristic: ' + characteristic.uuid + ' ' + sup);
-                                        queueServices.push(characteristic.uuid + ' ' + sup + '<br/>')
-                                    });
-                                }));
-                            });
-
-                            queueServices.forEach((element) => {
-                                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
+            queueServices.forEach((element) => {
+                divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
                                 'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
-                            });
+            })
 
-                            return queue;
-                        })
-                        .catch(error => {
-                            log.innerHTML += ('Argh! ' + error);
-                        });
-                });
+            return queue;
         })
         .catch(error => {
+            log.innerHTML += ('Argh! ' + error);
+        })
 
-            log.innerHTML += 'Error: ' + error + '</br>'
-        });
+
 }
 
 
