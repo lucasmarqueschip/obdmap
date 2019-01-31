@@ -4,20 +4,21 @@ var vs = document.getElementById('VersionBluetooth')
 var btnConnect = document.getElementById('btnConnect')
 var btnDisconnect = document.getElementById('btnDisConnect')
 var btnReconnect = document.getElementById('btnReconnect')
+var btnTeste = document.getElementById('btnTeste')
 
 function btnConnectClick() {
 
   let nameDevice = document.querySelector('#name').value;
   // Nome do dispositivo para filtrar, div para logs e botao para habilitar no fim da promisse
 
-// teste
+  // teste
   // let characteristics = [{ uuid: '01 [igora]' }, { uuid: '02 [igora]' }]
   // characteristics.forEach((characteristic, id) => {
   //   let element = characteristic.uuid + ' ' + '<br/>'
   //   divBtn.innerHTML += `<button class = 'btn btnRX' id='btnChar${id}' onclick=
   //       'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
   // })
-// fim teste
+  // fim teste
 
 
   ConnectBluetooth(nameDevice, 'btn', [btnDisconnect])
@@ -35,7 +36,11 @@ function btnReconnectClick() {
 function btnReadServiceClick() {
 
 }
+function btnTesteClick() {
+  
+  Teste(32)
 
+}
 
 
 

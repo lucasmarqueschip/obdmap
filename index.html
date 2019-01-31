@@ -35,6 +35,7 @@
             <button class="btn" id='btnConnect' onclick="btnConnectClick()">Conectar</button>
             <button class="btn" id='btnDisConnect' onclick="btnDisconnectClick()" disabled>Desconectar</button>
             <button class="btn" id='btnReconnect' onclick="btnReconnectClick()" disabled>Reconectar</button>
+            <button class="btn" id='btnTeste' onclick="btnTesteClick()">Teste</button>
         </div>
         <div id="logs"></div>
     </div>
@@ -90,7 +91,7 @@
                 })
                 services.forEach(service => {
                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
-                        log.innerHTML += ('> Service: ' + service.uuid);
+                        log.innerHTML += '> Service: ' + service.uuid;
                         characteristics.forEach((characteristic, id) => {
                             myCharacteristic.push(characteristic)
 
@@ -107,7 +108,7 @@
                 return queue;
             })
             .catch(error => {
-                log.innerHTML += ('Argh! ' + error);
+                log.innerHTML += 'Argh! ' + error;
             })
 
 
@@ -144,13 +145,24 @@
         if (bluetoothDevice.gatt.connected) {
             log.innerHTML += 'Bluetooth já está conectado!!!'
         } else {
-            log('Connecting to Bluetooth Device...');
+            log.innerHTML += 'Connecting to Bluetooth Device...';
             return bluetoothDevice.gatt.connect()
                 .then(server => {
-                    log('> Bluetooth Device connected');
+                    log.innerHTML += '> Bluetooth Device connected';
                 });
         }
     }
+
+    function Teste(data) {
+        writeCharacteristic.writeValue(data)
+            .then(_ =>{
+                log.innerHTML += 'Teste: Write Success '
+            })
+            .catch(error =>{
+                log.innerHTML += 'Argh! ' + error
+            })
+    }
+
 
     function ServiceOf(id) {
         let btnChar = document.getElementById(`btnChar${id}`)
@@ -162,26 +174,31 @@
         if (serviceOn) {
             myCharacteristic[id].startNotifications()
                 .then(_ => {
-                    log.innerHTML += myCharacteristic[id].uuid.split('[')[0] + ' sucess!!!'
+                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' sucess!!!'
                     myCharacteristic[id].addEventListener('characteristicvaluechanged',
                         handleNotifications);
                 })
                 .catch(error => {
-                    log.innerHTML += 'Argh! ' + error
+                    log.innerHTML += 'Argh! ' + error + '</br>'
                     log.innerHTML += myCharacteristic[id].uuid + ' não suportado! </br>'
+                    log.innerHTML += 'Tentando gravar </br>'
+                    let buffer = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length))
+                    myCharacteristic[id].writeValue(buffer)
+                        .then
                 })
         } else {
-            if (myCharacteristic[id]) {
-                myCharacteristic[id].stopNotifications()
-                    .then(_ => {
-                        log('> Notifications stopped');
-                        myCharacteristic[id].removeEventListener('characteristicvaluechanged',
-                            handleNotifications);
-                    })
-                    .catch(error => {
-                        log('Argh! ' + error);
-                    });
-            }
+            // if (myCharacteristic[id]) {
+            log.innerHTML += 'Stopping Notifications...';
+            myCharacteristic[id].stopNotifications()
+                .then(_ => {
+                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' stopped!!!';
+                    myCharacteristic[id].removeEventListener('characteristicvaluechanged',
+                        handleNotifications);
+                })
+                .catch(error => {
+                    log.innerHTML += 'Argh! ' + error;
+                });
+            // }
         }
 
 
@@ -203,7 +220,6 @@
         log.innerHTML += a.join(' ') + '</br>'
 
     }
-
 
 
 
