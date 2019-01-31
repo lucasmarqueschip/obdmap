@@ -38,7 +38,7 @@ function btnReadServiceClick() {
 }
 function btnTesteClick() {
   
-  Teste(32)
+  Teste(' ')
 
 }
 

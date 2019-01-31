@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.54</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.66</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -154,6 +154,7 @@
     }
 
     function Teste(data) {
+        log.innerHTML += 'Testando...'
         writeCharacteristic.writeValue(data)
             .then(_ =>{
                 log.innerHTML += 'Teste: Write Success '
