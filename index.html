@@ -25,7 +25,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.49</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.50</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -44,13 +44,14 @@
 
 <script>
     // esse script será o bluetooth.js
+    //fonte: https://googlechrome.github.io/samples/web-bluetooth/
     "use strict";
 
     var bluetoothDevice
-    let queueServices = []
+    let myCharacteristic = []
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
-        
+
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
         let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
@@ -87,6 +88,7 @@
                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
                         log.innerHTML += ('> Service: ' + service.uuid);
                         characteristics.forEach(characteristic => {
+                            myCharacteristic.push(characteristic)
                             let sup = getSupportedProperties(characteristic)
 
                             let element = characteristic.uuid + ' ' + sup + '<br/>'
@@ -107,10 +109,11 @@
     }
 
     function DisconnectBluetooth(classDisable, elementEnabled) {
-        
+
         disabledAllBtn(classDisable)
         elementEnabled.forEach(e => {
             e.disabled = false
+            log.innerHTML += `Elemento ${e.innerHTML} habilitado`
         })
         if (!bluetoothDevice) {
             return;
@@ -118,6 +121,7 @@
         log.innerHTML += 'Desconectando Bluetooth'
         if (bluetoothDevice.gatt.connected) {
             bluetoothDevice.gatt.disconnect();
+            log.innerHTML += 'Bluetooth desconectado!'
         } else {
             log.innerHTML += 'Bluetooth já desconectado!!!'
         }
@@ -144,11 +148,49 @@
     }
 
     function ServiceOf(uuid) {
-        
-        log.innerHTML += 'Servico ' + uuid + ' clickado</br>'
-        let service = uuid.split('-')[0]
-        log.innerHTML += 'Servico2 ' + service + ' clickado</br>'
+        log.innerHTML += JSON.stringify(myCharacteristic) + '</br>'
+
+        myCharacteristic[3].startNotifications()
+            .then(_ => {
+                log.innerHTML += myCharacteristic[3].uuid + ' sucess!!!'
+                myCharacteristic.addEventListener('characteristicvaluechanged',
+                    handleNotifications);
+            })
+
+        // let service = uuid.split('-')[0]
+        // log.innerHTML += 'Executando ' + service + ' </br>'
+
+
+
+
+
+
     }
+
+    function handleNotifications(event) {
+        let value = event.target.value;
+        let a = [];
+        // Convert raw data bytes to hex values just for the sake of showing something.
+        // In the "real" world, you'd use data.getUint8, data.getUint16 or even
+        // TextDecoder to process raw data bytes.
+        for (let i = 0; i < value.byteLength; i++) {
+            a.push('0x' + ('00' + value.getUint8(i).toString(16)).slice(-2));
+        }
+        log.innerHTML += a.join(' ') + '</br>'
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // /* Utils */
 
