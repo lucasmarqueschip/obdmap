@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
+    crossorigin="anonymous">
 
     <title>Bluetooth</title>
 
@@ -26,7 +25,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.47</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.48</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -51,6 +50,7 @@
     let queueServices = []
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
+
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
         let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
@@ -79,6 +79,10 @@
             })
             .then(services => {
                 let queue = Promise.resolve();
+                disabledAllBtn(classDisable)
+                elementEnabled.forEach(e => {
+                    e.disabled = false
+                })
                 services.forEach(service => {
                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
                         log.innerHTML += ('> Service: ' + service.uuid);
@@ -89,10 +93,6 @@
                             divBtn.innerHTML += `<button class = 'btn' id='btnRX' onclick=
                                 'ServiceOf("${element.split(' ')[0]}")'>${element}</button>`
 
-                            disabledAllBtn(classDisable)
-                            elementEnabled.forEach(e => {
-                                e.disabled = false
-                            })
 
                         });
                     }));
