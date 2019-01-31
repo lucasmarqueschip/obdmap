@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.51</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.52</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -161,8 +161,8 @@
 
         myCharacteristic[id].startNotifications()
             .then(_ => {
-                log.innerHTML += myCharacteristic[id].uuid + ' sucess!!!'
-                myCharacteristic.addEventListener('characteristicvaluechanged',
+                log.innerHTML += myCharacteristic[id].uuid.split('[')[0] + ' sucess!!!'
+                myCharacteristic[id].addEventListener('characteristicvaluechanged',
                     handleNotifications);
             })
             .catch( error => {
