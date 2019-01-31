@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.69</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.70</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -157,7 +157,7 @@
         log.innerHTML += 'Testando...<br/>'
         
         
-        writeBuffer = [32]
+        let writeBuffer = [32]
         var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
 
         myCharacteristic[2].writeValue(tmpWriteBfr)
