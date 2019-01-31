@@ -25,7 +25,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.48</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.49</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -50,7 +50,7 @@
     let queueServices = []
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
-
+        
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
         let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
@@ -107,6 +107,7 @@
     }
 
     function DisconnectBluetooth(classDisable, elementEnabled) {
+        
         disabledAllBtn(classDisable)
         elementEnabled.forEach(e => {
             e.disabled = false
@@ -143,10 +144,10 @@
     }
 
     function ServiceOf(uuid) {
-        service = uuid.split('-')[0]
-        log.innerHTML += 'Servico ' + service + ' clickado</br>'
-
-
+        
+        log.innerHTML += 'Servico ' + uuid + ' clickado</br>'
+        let service = uuid.split('-')[0]
+        log.innerHTML += 'Servico2 ' + service + ' clickado</br>'
     }
 
     // /* Utils */

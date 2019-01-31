@@ -8,16 +8,16 @@ var btnReconnect = document.getElementById('btnReconnect')
 function btnConnectClick() {
   let nameDevice = document.querySelector('#name').value;
   // Nome do dispositivo para filtrar, div para logs e botao para habilitar no fim da promisse
-  ConnectBluetooth(nameDevice, 'btn', [btnDisconnect, btnReconnect])
+  ConnectBluetooth(nameDevice, 'btn', [btnDisconnect])
 }
 
 function btnDisconnectClick() {
-  DisconnectBluetooth([btnReconnect], 'btn')
+  DisconnectBluetooth('btn', [btnReconnect])
 }
 
 function btnReconnectClick(){
   
-  ReconnectBluetooth([btnDisconnect], 'btn')
+  ReconnectBluetooth('btn', [btnDisconnect])
 }
 
 function btnReadServiceClick() {
