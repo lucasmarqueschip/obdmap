@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.66</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.67</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -119,17 +119,17 @@
         disabledAllBtn(classDisable)
         elementEnabled.forEach(e => {
             e.disabled = false
-            log.innerHTML += `Elemento ${e.innerHTML} habilitado`
+            log.innerHTML += `Elemento ${e.innerHTML} habilitado<br/>`
         })
         if (!bluetoothDevice) {
             return;
         }
-        log.innerHTML += 'Desconectando Bluetooth'
+        log.innerHTML += 'Desconectando Bluetooth<br/>'
         if (bluetoothDevice.gatt.connected) {
             bluetoothDevice.gatt.disconnect();
-            log.innerHTML += 'Bluetooth desconectado!'
+            log.innerHTML += 'Bluetooth desconectado!<br/>'
         } else {
-            log.innerHTML += 'Bluetooth já desconectado!!!'
+            log.innerHTML += 'Bluetooth já desconectado!!!<br/>'
         }
     }
 
@@ -141,26 +141,26 @@
         if (!bluetoothDevice) {
             return;
         }
-        log.innerHTML += 'Reconectando Bluetooth...'
+        log.innerHTML += 'Reconectando Bluetooth...<br/>'
         if (bluetoothDevice.gatt.connected) {
-            log.innerHTML += 'Bluetooth já está conectado!!!'
+            log.innerHTML += 'Bluetooth já está conectado!!!<br/>'
         } else {
-            log.innerHTML += 'Connecting to Bluetooth Device...';
+            log.innerHTML += 'Connecting to Bluetooth Device...<br/>';
             return bluetoothDevice.gatt.connect()
                 .then(server => {
-                    log.innerHTML += '> Bluetooth Device connected';
+                    log.innerHTML += '> Bluetooth Device connected<br/>';
                 });
         }
     }
 
     function Teste(data) {
-        log.innerHTML += 'Testando...'
-        writeCharacteristic.writeValue(data)
+        log.innerHTML += 'Testando...<br/>'
+        myCharacteristic[2].writeValue(data)
             .then(_ =>{
-                log.innerHTML += 'Teste: Write Success '
+                log.innerHTML += 'Teste: Write Success <br/>'
             })
             .catch(error =>{
-                log.innerHTML += 'Argh! ' + error
+                log.innerHTML += 'Argh! ' + error + '<br/>'
             })
     }
 
