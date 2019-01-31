@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    crossorigin="anonymous">
+    <!-- crossorigin="anonymous"> -->
 
     <title>Bluetooth</title>
 
@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.52</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.53</h1>
         <input type="text" id="name" value="OBD001910" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -52,7 +52,7 @@
 
     var bluetoothDevice
     let myCharacteristic = []
-    
+
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
 
@@ -93,7 +93,7 @@
                         log.innerHTML += ('> Service: ' + service.uuid);
                         characteristics.forEach((characteristic, id) => {
                             myCharacteristic.push(characteristic)
-                            
+
                             let sup = getSupportedProperties(characteristic)
 
                             let element = characteristic.uuid + ' ' + sup + '<br/>'
@@ -159,18 +159,30 @@
         if (serviceOn) btnChar.setAttribute('wm-ativado', '')
         else btnChar.removeAttribute('wm-ativado')
 
-        myCharacteristic[id].startNotifications()
-            .then(_ => {
-                log.innerHTML += myCharacteristic[id].uuid.split('[')[0] + ' sucess!!!'
-                myCharacteristic[id].addEventListener('characteristicvaluechanged',
-                    handleNotifications);
-            })
-            .catch( error => {
-                log.innerHTML += 'Argh! ' + error
-                log.innerHTML += myCharacteristic[id].uuid +' não suportado! </br>'
-            })
-        // let service = uuid.split('-')[0]
-        // log.innerHTML += 'Executando ' + service + ' </br>'
+        if (serviceOn) {
+            myCharacteristic[id].startNotifications()
+                .then(_ => {
+                    log.innerHTML += myCharacteristic[id].uuid.split('[')[0] + ' sucess!!!'
+                    myCharacteristic[id].addEventListener('characteristicvaluechanged',
+                        handleNotifications);
+                })
+                .catch(error => {
+                    log.innerHTML += 'Argh! ' + error
+                    log.innerHTML += myCharacteristic[id].uuid + ' não suportado! </br>'
+                })
+        } else {
+            if (myCharacteristic[id]) {
+                myCharacteristic[id].stopNotifications()
+                    .then(_ => {
+                        log('> Notifications stopped');
+                        myCharacteristic[id].removeEventListener('characteristicvaluechanged',
+                            handleNotifications);
+                    })
+                    .catch(error => {
+                        log('Argh! ' + error);
+                    });
+            }
+        }
 
 
 
