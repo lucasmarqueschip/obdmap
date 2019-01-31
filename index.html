@@ -28,8 +28,8 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.68</h1>
-        <input type="text" id="name" value="OBD001910" placeholder="Device">
+        <h1 id="VersionBluetooth">Version: 0.0.69</h1>
+        <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
             <button class="btn" id='btnConnect' onclick="btnConnectClick()">Conectar</button>
@@ -155,7 +155,12 @@
 
     function Teste(data) {
         log.innerHTML += 'Testando...<br/>'
-        myCharacteristic[2].writeValue([32])
+        
+        
+        writeBuffer = [32]
+        var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
+
+        myCharacteristic[2].writeValue(tmpWriteBfr)
             .then(_ =>{
                 log.innerHTML += 'Teste: Write Success <br/>'
             })
