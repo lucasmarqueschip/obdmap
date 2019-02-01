@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.73</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.74</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -157,8 +157,19 @@
         log.innerHTML += 'Testando...<br/>'
 
 
-        let writeBuffer = [32]
-        var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
+        // let writeBuffer = [32]
+        // var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
+        // log.innerHTML += tmpWriteBfr + '<br/>'
+
+        // writeBuffer = prompt('Digite o comando', '0F55010110AA')
+        // if (writeBuffer != null && writeBuffer != '') {
+        //     let bytes = []; // char codes
+        //     for (let i = 0; i < writeBuffer.length; ++i) {
+        //         bytes = bytes.concat([writeBuffer.charCodeAt(i)]);
+        //     }
+        //     tmpWriteBfr = Uint8Array.from(bytes.splice(0, writeBuffer.length));
+
+        //     log.innerHTML += tmpWriteBfr + '<br/>'
 
         myCharacteristic[2].writeValue(tmpWriteBfr)
             .then(_ => {
@@ -168,7 +179,7 @@
                 log.innerHTML += 'Argh! ' + error + '<br/>'
             })
     }
-
+    }
 
     function ServiceOf(id) {
         let btnChar = document.getElementById(`btnChar${id}`)
@@ -195,7 +206,16 @@
                 //gravar
                 let writeBuffer = prompt('Digite o comando', '0F55010110AA')
                 if (writeBuffer != null && writeBuffer != '') {
-                    var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
+
+
+
+                    let bytes = []; // char codes
+                    for (let i = 0; i < writeBuffer.length; ++i) {
+                        bytes = bytes.concat([writeBuffer.charCodeAt(i)]);
+                    }
+                    var tmpWriteBfr = Uint8Array.from(bytes.splice(0, writeBuffer.length));
+                    // log.innerHTML += tmpWriteBfr + '<br/>'
+
                     myCharacteristic[id].writeValue(tmpWriteBfr)
                         .then(_ => {
                             log.innerHTML += `>${tmpWriteBfr}'<br/>'`
@@ -238,9 +258,7 @@
         for (let i = 0; i < value.byteLength; i++) {
             a.push(('00' + value.getUint8(i).toString(16)).slice(-2));
         }
-        log.innerHTML += '<' + value
         log.innerHTML += '<' + a.join(' ') + '</br>'
-
     }
 
 
