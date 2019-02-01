@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.72</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.73</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -176,37 +176,40 @@
         let serviceOn = btnChar.getAttribute('wm-ativado') == null
 
         if (serviceOn) {
-            myCharacteristic[id].startNotifications()
-                .then(_ => {
-                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' sucess!!!</br>'
-                    myCharacteristic[id].addEventListener('characteristicvaluechanged',
-                        handleNotifications);
-                    //mostrando ativo no botao
-                    
-                    if (serviceOn) btnChar.setAttribute('wm-ativado', '')
-                    else btnChar.removeAttribute('wm-ativado')
-                })
-                .catch(error => {
-                    log.innerHTML += 'Argh! ' + error + '</br>'
-                    log.innerHTML += myCharacteristic[id].uuid + ' não suportado! </br>'
-                    log.innerHTML += 'Tentando gravar </br>'
-                    //gravar
-                    let writeBuffer = prompt('Digite o comando', '0F55010110AA')
-                    if (writeBuffer != null && writeBuffer != '') {
-                        var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
-                        myCharacteristic[id].writeValue(tmpWriteBfr)
-                            .then(_ => {
-                                log.innerHTML += `>${tmpWriteBfr}'<br/>'`
-                            })
-                            .catch(error => {
-                                log.innerHTML += 'Argh! ' + error + '<br/>'
-                            })
-                    } else
-                        log.innerHTML += 'Cancelado!<br/>'
-                })
+            if (id == 3 || id == 1) {
+                myCharacteristic[id].startNotifications()
+                    .then(_ => {
+                        log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' sucess!!!</br>'
+                        myCharacteristic[id].addEventListener('characteristicvaluechanged',
+                            handleNotifications);
+                        //mostrando ativo no botao                    
+                        btnChar.setAttribute('wm-ativado', '')
+
+                    })
+                    .catch(error => {
+                        log.innerHTML += 'Argh! ' + error + '</br>'
+                        log.innerHTML += myCharacteristic[id].uuid + ' não suportado! </br>'
+                        log.innerHTML += 'Tentando gravar </br>'
+                    })
+            } else {
+                //gravar
+                let writeBuffer = prompt('Digite o comando', '0F55010110AA')
+                if (writeBuffer != null && writeBuffer != '') {
+                    var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
+                    myCharacteristic[id].writeValue(tmpWriteBfr)
+                        .then(_ => {
+                            log.innerHTML += `>${tmpWriteBfr}'<br/>'`
+                        })
+                        .catch(error => {
+                            log.innerHTML += 'Argh! ' + error + '<br/>'
+                        })
+                } else
+                    log.innerHTML += 'Cancelado!<br/>'
+            }
         } else {
             // if (myCharacteristic[id]) {
             log.innerHTML += 'Stopping Notifications...';
+            btnChar.removeAttribute('wm-ativado')
             myCharacteristic[id].stopNotifications()
                 .then(_ => {
                     log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' stopped!!!</br>';
