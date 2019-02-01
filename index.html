@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.79</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.80</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -68,6 +68,8 @@
         let options = { filters: [], optionalServices: optionalServices }
         if (name) {
             options.filters.push({ name })
+        }else{
+            options.filters.push({ acceptAllDevices: true })
         }
         // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
         navigator.bluetooth.requestDevice(options)
