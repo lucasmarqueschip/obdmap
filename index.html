@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.84</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.85</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -70,7 +70,7 @@
             options = { filters: [], optionalServices: optionalServices }
             options.filters.push({ name })
         }else{
-            options = { filters: [], optionalServices: optionalServices }
+            options = { filters: [{services : optionalServices }]}
             //options.acceptAllDevices = true
         }
         // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
