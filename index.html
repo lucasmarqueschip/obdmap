@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.71</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.72</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -91,7 +91,7 @@
                 })
                 services.forEach(service => {
                     queue = queue.then(_ => service.getCharacteristics().then(characteristics => {
-                        log.innerHTML += '> Service: ' + service.uuid;
+                        log.innerHTML += '> Service: ' + service.uuid + '</br>';
                         characteristics.forEach((characteristic, id) => {
                             myCharacteristic.push(characteristic)
 
@@ -99,7 +99,7 @@
 
                             let element = characteristic.uuid + ' ' + sup + '<br/>'
                             divBtn.innerHTML += `<button class = 'btn btnRX' id='btnChar${id}' onclick=
-                                'ServiceOf("${id}")'>${element}</button>`
+                                'ServiceOf("${id}")'>${element}</button></br>`
 
 
                         });
@@ -108,7 +108,7 @@
                 return queue;
             })
             .catch(error => {
-                log.innerHTML += 'Argh! ' + error;
+                log.innerHTML += 'Argh! ' + error + '</br>';
             })
 
 
@@ -173,15 +173,16 @@
     function ServiceOf(id) {
         let btnChar = document.getElementById(`btnChar${id}`)
 
+        let serviceOn = btnChar.getAttribute('wm-ativado') == null
 
         if (serviceOn) {
             myCharacteristic[id].startNotifications()
                 .then(_ => {
-                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' sucess!!!'
+                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' sucess!!!</br>'
                     myCharacteristic[id].addEventListener('characteristicvaluechanged',
                         handleNotifications);
                     //mostrando ativo no botao
-                    let serviceOn = btnChar.getAttribute('wm-ativado') == null
+                    
                     if (serviceOn) btnChar.setAttribute('wm-ativado', '')
                     else btnChar.removeAttribute('wm-ativado')
                 })
@@ -208,12 +209,12 @@
             log.innerHTML += 'Stopping Notifications...';
             myCharacteristic[id].stopNotifications()
                 .then(_ => {
-                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' stopped!!!';
+                    log.innerHTML += myCharacteristic[id].uuid.split('-')[0] + ' stopped!!!</br>';
                     myCharacteristic[id].removeEventListener('characteristicvaluechanged',
                         handleNotifications);
                 })
                 .catch(error => {
-                    log.innerHTML += 'Argh! ' + error;
+                    log.innerHTML += 'Argh! ' + error + '</br>';
                 });
             // }
         }
