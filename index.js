@@ -5,6 +5,7 @@ var btnConnect = document.getElementById('btnConnect')
 var btnDisconnect = document.getElementById('btnDisConnect')
 var btnReconnect = document.getElementById('btnReconnect')
 var btnTeste = document.getElementById('btnTeste')
+// var btnHexa = document.getElementById('btnHexa')
 
 function btnConnectClick() {
 
