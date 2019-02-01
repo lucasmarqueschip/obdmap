@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.78</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.79</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -215,12 +215,10 @@
                         bytes = bytes.concat([writeBuffer.charCodeAt(i)]);
                     }
                     let tmpWriteBfr = Uint8Array.from(bytes.splice(0, writeBuffer.length));
-                    tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
-                    
-
-                    myCharacteristic[id].writeValue(tmpWriteBfr)
+                    myCharacteristic[id].writeValue(tmpWriteBfr)                    
                         .then(_ => {
-                            log.innerHTML += `>${tmpWriteBfr}'<br/>'`
+                            tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
+                            log.innerHTML += `>${tmpWriteBfr}<br/>`
                         })
                         .catch(error => {
                             log.innerHTML += 'Argh! ' + error + '<br/>'
