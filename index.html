@@ -28,7 +28,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.77</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.78</h1>
         <input type="text" id="name" value="SLAVE" placeholder="Device">
 
         <div class="display" id="btnDiv">
@@ -214,7 +214,7 @@
                     for (let i = 0; i < writeBuffer.length; ++i) {
                         bytes = bytes.concat([writeBuffer.charCodeAt(i)]);
                     }
-                    let = tmpWriteBfr = Uint8Array.from(bytes.splice(0, writeBuffer.length));
+                    let tmpWriteBfr = Uint8Array.from(bytes.splice(0, writeBuffer.length));
                     tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
                     
 
