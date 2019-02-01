@@ -70,7 +70,8 @@
             options = { filters: [], optionalServices: optionalServices }
             options.filters.push({ name })
         }else{
-            options.acceptAllDevices = true
+            options.optionalServices = optionalServices
+            //options.acceptAllDevices = true
         }
         // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
         navigator.bluetooth.requestDevice(options)
