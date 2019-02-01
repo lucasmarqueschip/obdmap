@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.88</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.89</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -43,8 +43,8 @@
 
         <div class="display" id="btnDiv">
 
-            <button class="btn" id='btnConnect' onclick="btnConnectClick()">Conectar</button>
-            <button class="btn" id='btnDisConnect' onclick="btnDisconnectClick()" disabled>Desconectar</button>
+            <button class="btn" id='btnConnect' onclick="btnConnectClick()">Parear Bluetooth</button>
+            <button class="btn" id='btnDisConnect' onclick="btnDisconnectClick()" disabled>Desconectar Bluetooth</button>
             <button class="btn" id='btnReconnect' onclick="btnReconnectClick()" disabled>Reconectar</button>
             <button class="btn2" id='btnTeste' onclick="btnTesteClick()">Teste</button>
         </div>
@@ -64,27 +64,24 @@
 
     var bluetoothDevice
     let myCharacteristic = []
-
+    let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
 
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
-        let serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
+
         let optionalServices = serviceUUiD
             .split(/, ?/).map(s => s.startsWith('0x') ? parseInt(s) : s)
             .filter(s => s && BluetoothUUID.getService);
 
-        // let options = { filters: [] }
-        let options = {}
+        let options = { filters: [{ services: optionalServices }] }
         if (name) {
-            options = { filters: [], optionalServices: optionalServices }
+            // options = { filters: [], optionalServices: optionalServices }
             options.filters.push({ name })
         } else {
-            options = { filters: [{ services: optionalServices }] }
-            //options.acceptAllDevices = true
+            // options = { filters: [{ services: optionalServices }] }
         }
-        // log.innerHTML += 'Request Device...' + JSON.stringify(options) + '</br>'
         navigator.bluetooth.requestDevice(options)
             .then(device => {
                 bluetoothDevice = device;
@@ -184,10 +181,14 @@
                 bytes = bytes.concat([writeBuffer.charCodeAt(i)]);
             }
             tmpWriteBfr = bytes
-            tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
+            // log.innerHTML += tmpWriteBfr + '<br/>'
+            // tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
+            // log.innerHTML += tmpWriteBfr + '<br/>'
+            tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, tmpWriteBfr.length));
             log.innerHTML += tmpWriteBfr + '<br/>'
-            tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));
-            log.innerHTML += tmpWriteBfr + '<br/>'
+
+        //     tmpWriteBfr = tmpWriteBfr.map(e => convertBase.dec2hex(e))
+            // log.innerHTML += toHex(109) + '<br/>'
         }
 
         // myCharacteristic[2].writeValue(tmpWriteBfr)
@@ -231,9 +232,11 @@
                         bytes = bytes.concat([writeBuffer.charCodeAt(i)]);
                     }
                     let tmpWriteBfr = bytes
-                    tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
-                    log.innerHTML += tmpWriteBfr + '<br/>'
+                    // let tx = tmpWriteBfr.map(e => toHex(e))
+                    // log.innerHTML += writeBuffer + '<br/>'
                     tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));
+
+
                     myCharacteristic[id].writeValue(tmpWriteBfr)
                         .then(_ => {
                             tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
@@ -277,9 +280,10 @@
         // TextDecoder to process raw data bytes.
         for (let i = 0; i < value.byteLength; i++) {
             a.push(('00' + value.getUint8(i).toString(16)).slice(-2));
-            rx += value[i]
+            rx += value[i] + ' '
         }
         log.innerHTML += '<' + a.join(' ') + '</br>'
+        log.innerHTML += `<${rx}</br>`
     }
 
 
@@ -290,7 +294,35 @@
 
 
 
+    var convertBase = function () {
 
+        function convertBase(baseFrom, baseTo) {
+            return function (num) {
+                return parseInt(num, baseFrom).toString(baseTo);
+
+            };
+        }
+
+        // binary to decimal
+        convertBase.bin2dec = convertBase(2, 10);
+
+        // binary to hexadecimal
+        convertBase.bin2hex = convertBase(2, 16);
+
+        // decimal to binary
+        convertBase.dec2bin = convertBase(10, 2);
+
+        // decimal to hexadecimal
+        convertBase.dec2hex = convertBase(10, 16);
+
+        // hexadecimal to binary
+        convertBase.hex2bin = convertBase(16, 2);
+
+        // hexadecimal to decimal
+        convertBase.hex2dec = convertBase(16, 10);
+
+        return convertBase;
+    }();
 
 
     // /* Utils */
