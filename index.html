@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.90</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.91</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -188,8 +188,8 @@
         log.innerHTML += 'Testando...<br/>'
 
 
-        ServiceOf(3, () => {
-            ServiceOf(1, () => {
+        ServiceOf(3, '', () => {
+            ServiceOf(1, '', () => {
                 ServiceOf(2, ' ', () => {
                     //aqui entra como prestador de serviços
                     // setInterval(ServiceOf(0, cmdList, () => {
