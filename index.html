@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.91</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.92</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -247,11 +247,11 @@
                             myCharacteristic[id].addEventListener('characteristicvaluechanged',
                                 handleNotifications);
                         else
-                            myCharacteristic[id].addEventListener('rxOBD',
-                                handleNotifications);
+                            myCharacteristic[id].addEventListener('characteristicvaluechanged',
+                                rxOBD);
                         //mostrando ativo no botao                    
                         btnChar.setAttribute('wm-ativado', '')
-                        callback()
+                        if (callback == typeof (Function)) callback()
                     })
                     .catch(error => {
                         log.innerHTML += 'Argh! ' + error + '</br>'
@@ -280,7 +280,7 @@
                         .then(_ => {
                             tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
                             log.innerHTML += `>${writeBuffer}<br/>`
-                            callback()
+                            if (callback == typeof (Function)) callback()
                         })
                         .catch(error => {
                             log.innerHTML += 'Argh! ' + error + '<br/>'
