@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.99</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.100</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -83,6 +83,7 @@
     let myCharacteristic = []
     const serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
     let bufferRX = ''
+    let logArq = ''
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
 
@@ -379,14 +380,10 @@
 
     // Rotinas do protocolo OBDMAP Bluetooth
     function txOBD() {
-        log.innerHTML += '1. <br>'
         if (bufferRX != '') {
-            log.innerHTML += '2. <br>'
             //interpretar o comando pedido
             let cmdTX = toRx()
-            log.innerHTML += '3.' + cmdTX + '<br>'
             ServiceOf(0, cmdTX, () => {
-                log.innerHTML += '4. <br>'
                 bufferRX = '';
             })
         }
@@ -395,7 +392,6 @@
         let cmd = bufferRX.split(' ')
         let bufferTX = []
         let funcao = []
-        let logArq = ''
         if (cmd[1] == '23') {
             fileOpen(() => {
                 bufferTX = loadTX(cmd)
