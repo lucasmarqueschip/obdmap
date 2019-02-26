@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.101</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.102</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -337,6 +337,7 @@
         log.innerHTML += '<' + a.join(' ') + '</br>'
         bufferRX = a.join(' ')
         txOBD()
+        window.scroll(0,document.body.offsetHeight)
         // log.innerHTML += `<${rx}</br>`
     }
 
