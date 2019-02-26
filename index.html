@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.97</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.99</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -266,7 +266,7 @@
                     writeBuffer = cmd
                 if (writeBuffer != null && writeBuffer != '') {
                     let bytes = []; // char codes
-                    for (let i = 0; i < writeBuffer.length; ++i) {
+                    for (let i = 0; i < writeBuffer.length; i +=2) {
                         let s = writeBuffer[i] + writeBuffer[i + 1]
                         bytes = bytes.concat(Number('0x' + s));
                     }
