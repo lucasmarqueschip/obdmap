@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.96</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.97</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -273,9 +273,8 @@
                     let tmpWriteBfr = bytes
                     // let tx = tmpWriteBfr.map(e => toHex(e))
                     // log.innerHTML += writeBuffer + '<br/>'
-                    tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));
-
-
+                    tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));                    
+                    log.innerHTML += `>>>${JSON.stringify(tmpWriteBfr)}<br/>`
                     myCharacteristic[id].writeValue(tmpWriteBfr)
                         .then(_ => {
                             tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
