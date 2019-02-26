@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.94</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.95</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -191,7 +191,7 @@
             ServiceOf(1, '', () => {
                 ServiceOf(2, ' ', () => {
                     //aqui entra como prestador de serviços
-                    setInterval(txOBD(), 200)
+                    // setInterval(txOBD(), 200)
                 })
             })
         })
@@ -333,6 +333,7 @@
         }
         log.innerHTML += '<' + a.join(' ') + '</br>'
         bufferRX = a.join(' ')
+        txOBD()
         // log.innerHTML += `<${rx}</br>`
     }
 
@@ -376,12 +377,14 @@
 
     // Rotinas do protocolo OBDMAP Bluetooth
     function txOBD() {
+        log.innerHTML += '1. <br>'
         if (bufferRX != '') {
+            log.innerHTML += '2. <br>'
             //interpretar o comando pedido
             let cmdTX = toRx()
-            
+            log.innerHTML += '3.' + cmdTX + '<br>'
             ServiceOf(0, cmdTX, () => {
-
+                log.innerHTML += '4. <br>'
                 bufferRX = '';
             })
         }
