@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.100</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.101</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -275,11 +275,11 @@
                     // let tx = tmpWriteBfr.map(e => toHex(e))
                     // log.innerHTML += writeBuffer + '<br/>'
                     tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));                    
-                    log.innerHTML += `>>>${JSON.stringify(tmpWriteBfr)}<br/>`
+                    // log.innerHTML += `>>>${JSON.stringify(tmpWriteBfr)}<br/>`
                     myCharacteristic[id].writeValue(tmpWriteBfr)
                         .then(_ => {
                             tmpWriteBfr = tmpWriteBfr.map(e => toHex(e))
-                            log.innerHTML += `>${writeBuffer}<br/>`
+                            log.innerHTML += `>${spaceBetween(writeBuffer)}<br/>`
                             // if (callback == typeof (Function)) 
                             callback()
                         })
@@ -348,35 +348,35 @@
 
 
 
-    var convertBase = function () {
+    // var convertBase = function () {
 
-        function convertBase(baseFrom, baseTo) {
-            return function (num) {
-                return parseInt(num, baseFrom).toString(baseTo);
+    //     function convertBase(baseFrom, baseTo) {
+    //         return function (num) {
+    //             return parseInt(num, baseFrom).toString(baseTo);
 
-            };
-        }
+    //         };
+    //     }
 
-        // binary to decimal
-        convertBase.bin2dec = convertBase(2, 10);
+    //     // binary to decimal
+    //     convertBase.bin2dec = convertBase(2, 10);
 
-        // binary to hexadecimal
-        convertBase.bin2hex = convertBase(2, 16);
+    //     // binary to hexadecimal
+    //     convertBase.bin2hex = convertBase(2, 16);
 
-        // decimal to binary
-        convertBase.dec2bin = convertBase(10, 2);
+    //     // decimal to binary
+    //     convertBase.dec2bin = convertBase(10, 2);
 
-        // decimal to hexadecimal
-        convertBase.dec2hex = convertBase(10, 16);
+    //     // decimal to hexadecimal
+    //     convertBase.dec2hex = convertBase(10, 16);
 
-        // hexadecimal to binary
-        convertBase.hex2bin = convertBase(16, 2);
+    //     // hexadecimal to binary
+    //     convertBase.hex2bin = convertBase(16, 2);
 
-        // hexadecimal to decimal
-        convertBase.hex2dec = convertBase(16, 10);
+    //     // hexadecimal to decimal
+    //     convertBase.hex2dec = convertBase(16, 10);
 
-        return convertBase;
-    }();
+    //     return convertBase;
+    // }();
 
     // Rotinas do protocolo OBDMAP Bluetooth
     function txOBD() {
