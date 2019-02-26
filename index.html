@@ -12,17 +12,21 @@
 
 
     <style>
-        .btn, .btn2 {
+        .btn,
+        .btn2 {
             font-size: 1.5rem;
         }
-        .display{
+
+        .display {
             display: grid;
-            grid-gap: 4px;            
+            grid-gap: 4px;
         }
-        [wm-ativado]{
+
+        [wm-ativado] {
             background-color: lime;
         }
-        .option{
+
+        .option {
             display: inline;
         }
     </style>
@@ -31,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.92</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.93</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -44,7 +48,8 @@
         <div class="display" id="btnDiv">
 
             <button class="btn" id='btnConnect' onclick="btnConnectClick()">Parear Bluetooth</button>
-            <button class="btn" id='btnDisConnect' onclick="btnDisconnectClick()" disabled>Desconectar Bluetooth</button>
+            <button class="btn" id='btnDisConnect' onclick="btnDisconnectClick()" disabled>Desconectar
+                Bluetooth</button>
             <button class="btn" id='btnReconnect' onclick="btnReconnectClick()" disabled>Reconectar</button>
             <button class="btn2" id='btnTeste' onclick="btnTesteClick()">Teste</button>
         </div>
@@ -77,13 +82,7 @@
     var bluetoothDevice
     let myCharacteristic = []
     const serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
-    let cmdListOBD = [
-        '81',
-        '30',
-        '23',
-        '3D',
-        '82'
-    ]
+    let bufferRX = ''
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
 
@@ -192,9 +191,7 @@
             ServiceOf(1, '', () => {
                 ServiceOf(2, ' ', () => {
                     //aqui entra como prestador de serviços
-                    // setInterval(ServiceOf(0, cmdList, () => {
-
-                    //}), 200)
+                    setInterval(txOBD(), 200)
                 })
             })
         })
@@ -318,8 +315,8 @@
             a.push(('00' + value.getUint8(i).toString(16)).slice(-2));
             rx += value[i] + ' '
         }
-        log.innerHTML += '<1: ' + a.join(' ') + '</br>'
-        log.innerHTML += `<2: ${rx}</br>`
+        log.innerHTML += '<' + a.join(' ') + ' creditos!</br>'
+        //log.innerHTML += `<2: ${rx}</br>`
     }
 
     function handleNotifications(event) {
@@ -334,7 +331,8 @@
             rx += value[i] + ' '
         }
         log.innerHTML += '<' + a.join(' ') + '</br>'
-        log.innerHTML += `<${rx}</br>`
+        bufferRX = a.join(' ')
+        // log.innerHTML += `<${rx}</br>`
     }
 
 
@@ -375,6 +373,185 @@
         return convertBase;
     }();
 
+    // Rotinas do protocolo OBDMAP Bluetooth
+    function txOBD() {
+        if (bufferRX != '') {
+            //interpretar o comando pedido
+            let cmdTX = toRx()
+            
+            ServiceOf(0, cmdTX, () => {
+
+                bufferRX = '';
+            })
+        }
+    }
+    function toRx() {
+        let cmd = bufferRX.split(' ')
+        let bufferTX = []
+        let funcao = []
+        let logArq = ''
+        if (cmd[1] == '23') {
+            fileOpen(() => {
+                bufferTX = loadTX(cmd)
+                console.log(`< ${spaceBetween(bufferTX)}`)
+                return bufferTX;
+            })
+        }
+        else {
+            if (cmd[1] == '30') {
+                fileOpen(() => {
+                    bufferTX = requestFx(cmd)
+                    console.log(`< ${spaceBetween(bufferTX)}`)
+                    return bufferTX;
+                })
+            }
+            else {
+                switch (cmd[1]) {
+                    case '81': bufferTX = init(cmd); break;
+                    case '3D': bufferTX = logRX(cmd); break;
+                    case '3E': bufferTX = testPresent(cmd); break;
+                    case '82': bufferTX = finish(cmd); break;
+                    default: bufferTX = `027F${cmd[1]}11`
+                }
+                console.log(`< ${spaceBetween(bufferTX)}`)
+                return bufferTX;
+            }
+        }
+    }
+
+
+
+    function init(cmd) {
+        if (chkCheck(cmd)) return '01C1C2'
+        else return '037F8110'
+    }
+
+    function requestFx(cmd) {
+        if (chkCheck(cmd)) {
+            let cont = toHex(funcao.length)
+            let chk = 0
+            logArq = ''
+            return `0270${cont}${toHex(chk)}`
+        }
+        else return '037F8110'
+    }
+
+    function testPresent(cmd) {
+        if (chkCheck(cmd)) return '017E7F'
+        else return '037F3E10'
+    }
+
+    function loadTX(cmd) {
+        if (chkCheck(cmd)) {
+            if (funcao.length > cmd[2]) {
+                let ind = parseInt(cmd[2])
+                let s = spaceBetween(826380 + funcao[ind])
+                let chk = getChk(s.split(' '))
+                return `826380${funcao[ind]}${chk}`
+            }
+            else return '037F2312'
+        }
+        else return '037F2310'
+    }
+
+    function spaceBetween(s) {
+        let res = ''
+        for (let i = 0; i < s.length; i += 2) {
+            res += s[i] + s[i + 1] + ' '
+        }
+        return res
+    }
+
+    function logRX(cmd) {
+        if (chkCheck(cmd)) {
+            let s = bufferRX.substring(6, bufferRX.length - 2)
+            // console.log(s)
+            logArq += s
+            return '017D7E'
+        }
+        else return '037F3D10'
+    }
+
+    function finish(cmd) {
+        if (chkCheck(cmd)) {
+            //salvar log
+            saveTextAsFile()
+            return '01C2C3'
+        }
+        else return '037F8210'
+    }
+
+    function chkCheck(cmd) {
+        console.log(`> ${bufferRX}`)
+        let chk = getChk(cmd)
+        return cmd[cmd.length - 1] == chk
+    }
+
+    function getChk(cmd) {
+        let vet = []
+        vet = cmd.map(e => Number('0X' + e))
+        let chk = vet.reduce(
+            (ac, cur, ind) => {
+                if (ind < vet.length - 1) ac += parseInt(cur)
+                return ac
+            }
+        )
+        // chk = chk.toString(16).toLocaleUpperCase()
+        chk = toHex(chk)
+        // console.log(chk[chk.length -2] + chk[chk.length -1])
+        return chk[chk.length - 2] + chk[chk.length - 1]
+    }
+
+    function fileOpen(callback) {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+
+            var fileSelected = document.getElementById('txtfiletoread');
+            fileSelected.addEventListener('change', function (e) {
+
+                //Set the extension for the file
+                var fileExtension = /text.*/;
+                //Get the file object
+                var fileTobeRead = fileSelected.files[0];
+                //Check of the extension match
+                if (fileTobeRead.type.match(fileExtension)) {
+                    //Initialize the FileReader object to read the 2file
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (e) {
+                        funcao = fileReader.result.split('\r\n')
+                        callback()
+                    }
+                    fileReader.readAsText(fileTobeRead)
+                }
+                else {
+                    console.log("Por favor selecione arquivo texto");
+                }
+            }, false);
+        }
+        else {
+            console.log("Arquivo(s) não suportado(s)");
+        }
+    }
+
+    function saveTextAsFile() {
+        var textToSave = logArq;
+        // var textToSave = document.getElementById("inputTextToSave").value;
+        var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+        var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+        var fileNameToSaveAs = 'log';
+        // var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
+        var downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = "Download File";
+        downloadLink.href = textToSaveAsURL;
+        downloadLink.onclick = destroyClickedElement;
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+
+    function destroyClickedElement(event) {
+        document.body.removeChild(event.target);
+    }
 
     // /* Utils */
     function toHex(d) {
