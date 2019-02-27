@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.104</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.105</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -87,7 +87,7 @@
     let logArq = ''
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
-
+        fileOpen(() => {})
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
 
@@ -188,7 +188,7 @@
     function Teste(data) {
         log.innerHTML += 'Testando...<br/>'
 
-        fileOpen(() => {
+        
             ServiceOf(3, '', () => {
                 ServiceOf(1, '', () => {
                     ServiceOf(2, '20', () => {
@@ -198,7 +198,7 @@
                     })
                 })
             })
-        })
+        
 
         // let writeBuffer = [32]
         // var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
