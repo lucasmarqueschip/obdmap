@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.114</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.115</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -419,8 +419,8 @@
         //     else {
         switch (cmd[1]) {
             case '81': bufferTX = init(cmd); break;
-            case '30': bufferTX = loadTX(cmd); break;
-            case '23': bufferTX = requestFx(cmd); break;
+            case '30': bufferTX = requestFx(cmd); break;
+            case '23': bufferTX = loadTX(cmd); break;
             case '3D': bufferTX = logRX(cmd); break;
             case '3E': bufferTX = testPresent(cmd); break;
             case '82': bufferTX = finish(cmd); break;
@@ -446,7 +446,7 @@
             logArq = ''
             return `0270${cont}${toHex(chk)}`
         }
-        else return '037F8110'
+        else return '037F3010'
     }
 
     function testPresent(cmd) {
