@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.117</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.118</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -86,9 +86,10 @@
     let bufferRX = ''
     let logArq = ''
     let funcao = []
+    fileOpen(() => { })
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
-        fileOpen(() => { })
+        
         
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
@@ -447,7 +448,7 @@
             let chk = getChk(s.split(' '))
 
             logArq = ''
-            return `0270${cont}${toHex(chk)}`
+            return `0270${cont}${chk}`
         }
         else return '037F3010'
     }
