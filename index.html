@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.124</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.125</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -421,22 +421,6 @@
     function toRx() {
         let cmd = bufferRX.trim().split(' ')
         let bufferTX = []
-        // if (cmd[1] == '23') {
-        //     fileOpen(() => {
-        //         bufferTX = loadTX(cmd)
-        //         console.log(`< ${spaceBetween(bufferTX)}`)
-        //         return bufferTX;
-        //     })
-        // }
-        // else {
-        //     if (cmd[1] == '30') {
-        //         fileOpen(() => {
-        //             bufferTX = requestFx(cmd)
-        //             console.log(`< ${spaceBetween(bufferTX)}`)
-        //             return bufferTX;
-        //         })
-        //     }
-        //     else {
         switch (cmd[1]) {
             case '81': bufferTX = init(cmd); break;
             case '30': bufferTX = requestFx(cmd); break;
@@ -453,9 +437,6 @@
         console.log(`< ${spaceBetween(bufferTX)}`)
         return bufferTX;
     }
-    //     }
-    // }
-
 
 
     function init(cmd) {
@@ -483,7 +464,7 @@
     function loadTX(cmd) {
         if (chkCheck(cmd)) {
             if (funcao.length > parseInt('0X' + cmd[2])) {
-                let ind = parseInt(cmd[2])
+                let ind = parseInt('0X' + cmd[2])
                 let s = spaceBetween(826380 + funcao[ind -1])
                 let chk = getChk(s.split(' '))
                 return `826380${funcao[ind -1]}${chk}`
