@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.118</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.119</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -89,8 +89,8 @@
     fileOpen(() => { })
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
-        
-        
+
+
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
 
@@ -395,9 +395,14 @@
         if (bufferRX != '') {
             //interpretar o comando pedido
             let cmdTX = toRx()
-            ServiceOf(0, cmdTX, () => {
-                bufferRX = '';
-            })
+            let aux = ''
+            for (let i = 0; i < cmdTX.length; i += 40) {
+                aux = cmdTX.substring(i, i + 40)
+                console.log(i + ':' + aux)
+                ServiceOf(0, aux, () => {
+                    bufferRX = '';
+                })
+            }
         }
     }
     function toRx() {
@@ -426,7 +431,11 @@
             case '3D': bufferTX = logRX(cmd); break;
             case '3E': bufferTX = testPresent(cmd); break;
             case '82': bufferTX = finish(cmd); break;
-            default: bufferTX = `027F${cmd[1]}11`
+            default: {
+                // 91 + CMD
+                // let chk = 0X91 + cmd[1]
+                bufferTX = `027F${cmd[1]}11`
+            }
         }
         console.log(`< ${spaceBetween(bufferTX)}`)
         return bufferTX;
@@ -438,7 +447,12 @@
 
     function init(cmd) {
         if (chkCheck(cmd)) return '01C1C2'
-        else return '037F8110'
+        else return '037F811013'
+    }
+
+    function testPresent(cmd) {
+        if (chkCheck(cmd)) return '017E7F'
+        else return '037F3E10D0'
     }
 
     function requestFx(cmd) {
@@ -450,12 +464,7 @@
             logArq = ''
             return `0270${cont}${chk}`
         }
-        else return '037F3010'
-    }
-
-    function testPresent(cmd) {
-        if (chkCheck(cmd)) return '017E7F'
-        else return '037F3E10'
+        else return '037F3010C2'
     }
 
     function loadTX(cmd) {
@@ -466,9 +475,9 @@
                 let chk = getChk(s.split(' '))
                 return `826380${funcao[ind]}${chk}`
             }
-            else return '037F2312'
+            else return '037F2312B7'
         }
-        else return '037F2310'
+        else return '037F2310B5'
     }
 
     function spaceBetween(s) {
@@ -486,7 +495,7 @@
             logArq += s
             return '017D7E'
         }
-        else return '037F3D10'
+        else return '037F3D10CF'
     }
 
     function finish(cmd) {
@@ -495,7 +504,7 @@
             saveTextAsFile()
             return '01C2C3'
         }
-        else return '037F8210'
+        else return '037F821014'
     }
 
     function chkCheck(cmd) {
