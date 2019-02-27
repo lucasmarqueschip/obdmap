@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.110</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.111</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -336,11 +336,11 @@
             rx += value[i] + ' '
         }
         log.innerHTML += '<' + a.join(' ') + '</br>'
-        bufferRX += a.join(' ')
+        bufferRX += a.join(' ') + ' '
 
         let len = Number('0X' + bufferRX[0] + bufferRX[1])
-        let len2 = ((bufferRX.length + 1) / 3) -2
-        log.innerHTML += 'buffer: ' + bufferRX + '</br>'        
+        let len2 = ((bufferRX.length) / 3) -2
+        log.innerHTML += 'buffer: (' + bufferRX + ')</br>'        
         log.innerHTML += 'len: ' + len + ' ----- len2: ' + len2 + '</br>'
 
         if (len == len2) {
