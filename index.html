@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.105</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.106</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -51,7 +51,7 @@
             <button class="btn" id='btnDisConnect' onclick="btnDisconnectClick()" disabled>Desconectar
                 Bluetooth</button>
             <button class="btn" id='btnReconnect' onclick="btnReconnectClick()" disabled>Reconectar</button>
-            <input type="file" id="txtfiletoread"/><br />
+            <input type="file" id="txtfiletoread" /><br />
             <button class="btn2" id='btnTeste' onclick="btnTesteClick()">Teste</button>
         </div>
         <div id="logs"></div>
@@ -87,7 +87,7 @@
     let logArq = ''
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
-        fileOpen(() => {})
+        fileOpen(() => { })
 
         log.innerHTML += `Criando conexao: ${name} <br/>`
 
@@ -188,17 +188,17 @@
     function Teste(data) {
         log.innerHTML += 'Testando...<br/>'
 
-        
-            ServiceOf(3, '', () => {
-                ServiceOf(1, '', () => {
-                    ServiceOf(2, '20', () => {
-                        // ServiceOf(2, ' ', () => {
-                        //aqui entra como prestador de serviços
-                        // setInterval(txOBD(), 200)
-                    })
+
+        ServiceOf(3, '', () => {
+            ServiceOf(1, '', () => {
+                ServiceOf(2, '20', () => {
+                    // ServiceOf(2, ' ', () => {
+                    //aqui entra como prestador de serviços
+                    // setInterval(txOBD(), 200)
                 })
             })
-        
+        })
+
 
         // let writeBuffer = [32]
         // var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
@@ -336,9 +336,14 @@
             rx += value[i] + ' '
         }
         log.innerHTML += '<' + a.join(' ') + '</br>'
-        bufferRX = a.join(' ')
-        txOBD()
-        window.scroll(0, document.body.offsetHeight)
+        bufferRX += a.join(' ')
+        let len = Number('0X' + bufferRX[1] + bufferRX[1])
+        let len2 = bufferRX.length / 3
+        log.innerHTML += 'len: ' + len + ' ----- len2: ' + len2 + '</br>'
+        if (len == len2) {
+            txOBD()
+            window.scroll(0, document.body.offsetHeight)
+        }
         // log.innerHTML += `<${rx}</br>`
     }
 
@@ -410,18 +415,18 @@
         //         })
         //     }
         //     else {
-                switch (cmd[1]) {
-                    case '81': bufferTX = init(cmd); break;
-                    case '30': bufferTX = loadTX(cmd); break;
-                    case '23': bufferTX = requestFx(cmd); break;
-                    case '3D': bufferTX = logRX(cmd); break;
-                    case '3E': bufferTX = testPresent(cmd); break;
-                    case '82': bufferTX = finish(cmd); break;
-                    default: bufferTX = `027F${cmd[1]}11`
-                }
-                console.log(`< ${spaceBetween(bufferTX)}`)
-                return bufferTX;
-            }
+        switch (cmd[1]) {
+            case '81': bufferTX = init(cmd); break;
+            case '30': bufferTX = loadTX(cmd); break;
+            case '23': bufferTX = requestFx(cmd); break;
+            case '3D': bufferTX = logRX(cmd); break;
+            case '3E': bufferTX = testPresent(cmd); break;
+            case '82': bufferTX = finish(cmd); break;
+            default: bufferTX = `027F${cmd[1]}11`
+        }
+        console.log(`< ${spaceBetween(bufferTX)}`)
+        return bufferTX;
+    }
     //     }
     // }
 
