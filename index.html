@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.113</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.114</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -85,6 +85,7 @@
     const serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
     let bufferRX = ''
     let logArq = ''
+    let funcao = []
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
         fileOpen(() => { })
@@ -340,10 +341,9 @@
 
         let len = Number('0X' + bufferRX[0] + bufferRX[1])
         let len2 = ((bufferRX.length) / 3) -2
-        log.innerHTML += 'buffer: (' + bufferRX + ')</br>'        
-        log.innerHTML += 'dif len: ' + (len - len2) + '</br>'
-
-        if (len - len2 == 0) {
+        // log.innerHTML += 'buffer: (' + bufferRX + ')</br>'        
+        // log.innerHTML += 'dif len: ' + (len - len2) + '</br>'
+        if (len == len2) {
             txOBD()
         }
         window.scroll(0, document.body.offsetHeight)
@@ -401,7 +401,6 @@
     function toRx() {
         let cmd = bufferRX.trim().split(' ')
         let bufferTX = []
-        let funcao = []
         // if (cmd[1] == '23') {
         //     fileOpen(() => {
         //         bufferTX = loadTX(cmd)
