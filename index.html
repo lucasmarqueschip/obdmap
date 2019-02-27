@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.102</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.103</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -187,17 +187,17 @@
     function Teste(data) {
         log.innerHTML += 'Testando...<br/>'
 
-
-        ServiceOf(3, '', () => {
-            ServiceOf(1, '', () => {
-                ServiceOf(2, '20', () => {
-                // ServiceOf(2, ' ', () => {
-                    //aqui entra como prestador de serviços
-                    // setInterval(txOBD(), 200)
+        fileOpen(() => {
+            ServiceOf(3, '', () => {
+                ServiceOf(1, '', () => {
+                    ServiceOf(2, '20', () => {
+                        // ServiceOf(2, ' ', () => {
+                        //aqui entra como prestador de serviços
+                        // setInterval(txOBD(), 200)
+                    })
                 })
             })
         })
-
 
         // let writeBuffer = [32]
         // var tmpWriteBfr = Uint8Array.from(writeBuffer.splice(0, writeBuffer.length));
@@ -267,14 +267,14 @@
                     writeBuffer = cmd
                 if (writeBuffer != null && writeBuffer != '') {
                     let bytes = []; // char codes
-                    for (let i = 0; i < writeBuffer.length; i +=2) {
+                    for (let i = 0; i < writeBuffer.length; i += 2) {
                         let s = writeBuffer[i] + writeBuffer[i + 1]
                         bytes = bytes.concat(Number('0x' + s));
                     }
                     let tmpWriteBfr = bytes
                     // let tx = tmpWriteBfr.map(e => toHex(e))
                     // log.innerHTML += writeBuffer + '<br/>'
-                    tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));                    
+                    tmpWriteBfr = Uint8Array.from(tmpWriteBfr.splice(0, bytes.length));
                     // log.innerHTML += `>>>${JSON.stringify(tmpWriteBfr)}<br/>`
                     myCharacteristic[id].writeValue(tmpWriteBfr)
                         .then(_ => {
@@ -337,7 +337,7 @@
         log.innerHTML += '<' + a.join(' ') + '</br>'
         bufferRX = a.join(' ')
         txOBD()
-        window.scroll(0,document.body.offsetHeight)
+        window.scroll(0, document.body.offsetHeight)
         // log.innerHTML += `<${rx}</br>`
     }
 
@@ -393,24 +393,26 @@
         let cmd = bufferRX.split(' ')
         let bufferTX = []
         let funcao = []
-        if (cmd[1] == '23') {
-            fileOpen(() => {
-                bufferTX = loadTX(cmd)
-                console.log(`< ${spaceBetween(bufferTX)}`)
-                return bufferTX;
-            })
-        }
-        else {
-            if (cmd[1] == '30') {
-                fileOpen(() => {
-                    bufferTX = requestFx(cmd)
-                    console.log(`< ${spaceBetween(bufferTX)}`)
-                    return bufferTX;
-                })
-            }
-            else {
+        // if (cmd[1] == '23') {
+        //     fileOpen(() => {
+        //         bufferTX = loadTX(cmd)
+        //         console.log(`< ${spaceBetween(bufferTX)}`)
+        //         return bufferTX;
+        //     })
+        // }
+        // else {
+        //     if (cmd[1] == '30') {
+        //         fileOpen(() => {
+        //             bufferTX = requestFx(cmd)
+        //             console.log(`< ${spaceBetween(bufferTX)}`)
+        //             return bufferTX;
+        //         })
+        //     }
+        //     else {
                 switch (cmd[1]) {
                     case '81': bufferTX = init(cmd); break;
+                    case '30': bufferTX = loadTX(cmd); break;
+                    case '23': bufferTX = requestFx(cmd); break;
                     case '3D': bufferTX = logRX(cmd); break;
                     case '3E': bufferTX = testPresent(cmd); break;
                     case '82': bufferTX = finish(cmd); break;
@@ -419,8 +421,8 @@
                 console.log(`< ${spaceBetween(bufferTX)}`)
                 return bufferTX;
             }
-        }
-    }
+    //     }
+    // }
 
 
 
