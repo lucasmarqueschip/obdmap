@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.111</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.112</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -399,7 +399,7 @@
         }
     }
     function toRx() {
-        let cmd = bufferRX.split(' ')
+        let cmd = bufferRX.trim().split(' ')
         let bufferTX = []
         let funcao = []
         // if (cmd[1] == '23') {
