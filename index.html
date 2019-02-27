@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.119</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.120</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -396,13 +396,25 @@
             //interpretar o comando pedido
             let cmdTX = toRx()
             let aux = ''
-            for (let i = 0; i < cmdTX.length; i += 40) {
-                aux = cmdTX.substring(i, i + 40)
-                console.log(i + ':' + aux)
-                ServiceOf(0, aux, () => {
-                    bufferRX = '';
-                })
-            }
+            let cont = 0
+            setInterval(() => {
+                if (cont < cmdTX.length) {
+                    aux = cmdTX.substring(cont, cont + 40)
+                    ServiceOf(0, aux, () => {
+                        bufferRX = '';
+                    })
+                    console.log(cont + ':' + aux)
+                    cont += 40
+                }
+            }, 50)
+
+            // for (let i = 0; i < cmdTX.length; i += 40) {
+            //     aux = cmdTX.substring(i, i + 40)
+            //     console.log(i + ':' + aux)
+            //     ServiceOf(0, aux, () => {
+            //         bufferRX = '';
+            //     })
+            // }
         }
     }
     function toRx() {
