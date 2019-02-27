@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.120</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.121</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -339,6 +339,7 @@
         }
 
         bufferRX += a.join(' ') + ' '
+        bufferRX = bufferRX.toUpperCase()
 
         let len = Number('0X' + bufferRX[0] + bufferRX[1])
         let len2 = ((bufferRX.length) / 3) - 2
