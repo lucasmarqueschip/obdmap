@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.122</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.123</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -486,7 +486,7 @@
                 let ind = parseInt(cmd[2])
                 let s = spaceBetween(826380 + funcao[ind])
                 let chk = getChk(s.split(' '))
-                return `826380${funcao[ind]}${chk}`
+                return `826380${funcao[ind + 1]}${chk}`
             }
             else return '037F2312B7'
         }
