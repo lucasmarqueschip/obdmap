@@ -35,7 +35,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.108</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.109</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -326,7 +326,6 @@
 
     function handleNotifications(event) {
         let value = event.target.value;
-        console.log(JSON.stringify(value))
         let a = [];
         let rx = ''
         // Convert raw data bytes to hex values just for the sake of showing something.
@@ -340,7 +339,7 @@
         bufferRX += a.join(' ')
 
         let len = Number('0X' + bufferRX[1] + bufferRX[2])
-        let len2 = (bufferRX.length) / 2
+        let len2 = (bufferRX.length / 2) -3
         log.innerHTML += 'len: ' + len + ' ----- len2: ' + len2 + '</br>'
 
         if (len == len2) {
