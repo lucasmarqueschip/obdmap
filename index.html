@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- crossorigin="anonymous"> -->
 
     <title>Bluetooth</title>
 
@@ -35,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.126</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.127</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -52,7 +48,7 @@
                 Bluetooth</button>
             <button class="btn" id='btnReconnect' onclick="btnReconnectClick()" disabled>Reconectar</button>
             <input type="file" id="txtfiletoread" /><br />
-            <button class="btn2" id='btnTeste' onclick="btnTesteClick()">Teste</button>
+            <button class="btn2" id='btnTeste' onclick="btnTesteClick()">Web Off</button>
         </div>
         <div id="logs"></div>
     </div>
@@ -79,6 +75,11 @@
     // esse script será o bluetooth.js
     //fonte: https://googlechrome.github.io/samples/web-bluetooth/
     "use strict";
+
+
+
+
+
 
     var bluetoothDevice
     let myCharacteristic = []
@@ -340,6 +341,7 @@
 
         bufferRX += a.join(' ') + ' '
         bufferRX = bufferRX.toUpperCase()
+        console.log(a)
 
         let len = Number('0X' + bufferRX[0] + bufferRX[1])
         let len2 = ((bufferRX.length) / 3) - 2
@@ -465,9 +467,9 @@
         if (chkCheck(cmd)) {
             if (funcao.length >= parseInt('0X' + cmd[2])) {
                 let ind = parseInt('0X' + cmd[2])
-                let s = spaceBetween(826380 + funcao[ind -1])
+                let s = spaceBetween(826380 + funcao[ind - 1])
                 let chk = getChk(s.split(' '))
-                return `826380${funcao[ind -1]}${chk}`
+                return `826380${funcao[ind - 1]}${chk}`
             }
             else return '037F2312B7'
         }
