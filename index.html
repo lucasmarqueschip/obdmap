@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.150</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.151</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -440,7 +440,7 @@
                             setTimeout(() => { }, 50)
                             console.log('cont: ' + cont) 
 
-                            dif = cmdTX.length - cont;
+                            const dif = cmdTX.length - cont;
                             console.log('dif: ' + dif) 
                             aux = cmdTX.substring(cont, cmdTX.length)
                             console.log('Trying: ' + aux)
