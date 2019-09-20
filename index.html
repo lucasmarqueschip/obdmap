@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.137</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.138</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -428,11 +428,12 @@
                         cont += 40
                     }
                 } else {
-                    if (bufferRX != ''){
+                    if (bufferRX != '' && cmdTX != ''){
                         console.log(cmdTX)
                         ServiceOf(0, cmdTX, () => {
                             console.log('OK: ' + cmdTX)
                             bufferRX = ''
+                            cmdTX = ''
                             a = []
                         })
                     }
