@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.136</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.137</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -242,7 +242,7 @@
         let btnChar = document.getElementById(`btnChar${id}`)
 
         let serviceOn = btnChar.getAttribute('wm-ativado') == null
-
+        console.log(cmd)
         if (serviceOn) {
             if (id == 3 || id == 1) {
                 myCharacteristic[id].startNotifications()
@@ -271,6 +271,7 @@
                     writeBuffer = prompt('Digite o comando', '0F55010110AA')
                 else
                     writeBuffer = cmd
+                    console.log(writeBuffer)
                 if (writeBuffer != null && writeBuffer != '') {
                     let bytes = []; // char codes
                     for (let i = 0; i < writeBuffer.length; i += 2) {
@@ -414,7 +415,6 @@
         if (bufferRX != '') {
             //interpretar o comando pedido
             let cmdTX = toRx(tipo)
-            console.log(cmdTX)
             let aux = ''
             let cont = 0
             setInterval(() => {
@@ -428,7 +428,8 @@
                         cont += 40
                     }
                 } else {
-                    if (bufferRX != ''){                        
+                    if (bufferRX != ''){
+                        console.log(cmdTX)
                         ServiceOf(0, cmdTX, () => {
                             console.log('OK: ' + cmdTX)
                             bufferRX = ''
