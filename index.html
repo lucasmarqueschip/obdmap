@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.135</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.136</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -414,6 +414,7 @@
         if (bufferRX != '') {
             //interpretar o comando pedido
             let cmdTX = toRx(tipo)
+            console.log(cmdTX)
             let aux = ''
             let cont = 0
             setInterval(() => {
