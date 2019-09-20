@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.143</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.144</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -89,6 +89,9 @@
     let logArq = ''
     let funcao = []
     let tbSyncr = ''
+
+    let bdWeb = {}
+
     fileOpen(() => { })
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
@@ -242,7 +245,6 @@
         let btnChar = document.getElementById(`btnChar${id}`)
 
         let serviceOn = btnChar.getAttribute('wm-ativado') == null
-        console.log(cmd)
         if (serviceOn) {
             if (id == 3 || id == 1) {
                 myCharacteristic[id].startNotifications()
@@ -271,7 +273,6 @@
                     writeBuffer = prompt('Digite o comando', '0F55010110AA')
                 else
                     writeBuffer = cmd
-                console.log(writeBuffer)
                 if (writeBuffer != null && writeBuffer != '') {
                     let bytes = []; // char codes
                     for (let i = 0; i < writeBuffer.length; i += 2) {
@@ -428,6 +429,7 @@
                     })
                 } else {
                     setTimeout(() => { }, 50)
+                    console.log('Trying: ' + aux)
                     aux = cmdTX.substring(cont, cont + 40)
                     // while (cont < cmdTX.length) {
                     if (cont < cmdTX.length) {
@@ -437,16 +439,15 @@
                             if (cont < cmdTX.length) {
                                 setTimeout(() => { }, 50)
                                 aux = cmdTX.substring(cont, cont + 40)
-                            }
-                        })
-                    }
-                    if (cont < cmdTX.length) {
-                        ServiceOf(0, aux, () => {
-                            console.log('...: ' + aux)
-                            cont += 40
-                            if (cont < cmdTX.length) {
-                                setTimeout(() => { }, 50)
-                                aux = cmdTX.substring(cont, cont + 40)
+                                console.log('Trying: ' + aux)
+                                ServiceOf(0, aux, () => {
+                                    console.log('...: ' + aux)
+                                    cont += 40
+                                    if (cont < cmdTX.length) {
+                                        setTimeout(() => { }, 50)
+                                        aux = cmdTX.substring(cont, cont + 40)
+                                    }
+                                })
                             }
                         })
                     }
@@ -548,9 +549,11 @@
         return `41502B30303131303434463442${syncr}303030300D0A`
     }
 
+    function doSync() {
 
 
 
+    }
 
 
 
