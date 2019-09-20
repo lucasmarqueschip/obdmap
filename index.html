@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.127</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.128</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -85,6 +85,7 @@
     let myCharacteristic = []
     const serviceUUiD = '0000fefb-0000-1000-8000-00805f9b34fb'
     let bufferRX = ''
+    let a = [];
     let logArq = ''
     let funcao = []
     fileOpen(() => { })
@@ -329,7 +330,7 @@
 
     function handleNotifications(event) {
         let value = event.target.value;
-        let a = [];
+
         let rx = ''
         // Convert raw data bytes to hex values just for the sake of showing something.
         // In the "real" world, you'd use data.getUint8, data.getUint16 or even
@@ -341,25 +342,39 @@
 
         bufferRX += a.join(' ') + ' '
         bufferRX = bufferRX.toUpperCase()
-        console.log(a)
-
-        let len = Number('0X' + bufferRX[0] + bufferRX[1])
-        let len2 = ((bufferRX.length) / 3) - 2
-        // log.innerHTML += 'buffer: (' + bufferRX + ')</br>'        
-        // log.innerHTML += 'dif len: ' + (len - len2) + '</br>'
-        if (len == len2) {
-            log.innerHTML += '<' + bufferRX + '</br>'
-            txOBD()
+        console.log('<' + bufferRX)
+        if (bufferRX[0] + bufferRX[1] == '4F')
+            rotinasWebOff(a)
+        else {
+            let len = Number('0X' + bufferRX[0] + bufferRX[1])
+            let len2 = ((bufferRX.length) / 3) - 2
+            // log.innerHTML += 'buffer: (' + bufferRX + ')</br>'        
+            // log.innerHTML += 'dif len: ' + (len - len2) + '</br>'
+            if (len == len2) {
+                log.innerHTML += '<' + bufferRX + '</br>'
+                txOBD('flash')
+            }
+            window.scroll(0, document.body.offsetHeight)
+            // log.innerHTML += `<${rx}</br>`
         }
-        window.scroll(0, document.body.offsetHeight)
-        // log.innerHTML += `<${rx}</br>`
     }
 
-
-
-
-
-
+    function rotinasWebOff(vetRx) {
+        let bufferTX
+        if (vetRx.length >= 7) {
+            // chegou o length
+            let len = vetRx.slice(3, 7)
+                .map(e => String.fromCharCode(Number.parseInt(e, 16))).join('')
+            len = 3 + parseInt(len, 16) + 4 + 4 + 2 + 2 //cab + len + bLen + chk + + id + eof
+            console.log(len + ' ' + vetRx.length)
+            if (vetRx.length == len) {
+                log.innerHTML += '<' + bufferRX + '</br>'
+                txOBD('webOff')
+            }
+            // console.log(`< ${spaceBetween(bufferTX)}`)
+            // return bufferTX;
+        }
+    }
 
 
 
@@ -394,10 +409,10 @@
     // }();
 
     // Rotinas do protocolo OBDMAP Bluetooth
-    function txOBD() {
+    function txOBD(tipo) {
         if (bufferRX != '') {
             //interpretar o comando pedido
-            let cmdTX = toRx()
+            let cmdTX = toRx(tipo)
             let aux = ''
             let cont = 0
             setInterval(() => {
@@ -420,25 +435,46 @@
             // }
         }
     }
-    function toRx() {
-        let cmd = bufferRX.trim().split(' ')
+    function toRx(tipo) {
         let bufferTX = []
-        switch (cmd[1]) {
-            case '81': bufferTX = init(cmd); break;
-            case '30': bufferTX = requestFx(cmd); break;
-            case '23': bufferTX = loadTX(cmd); break;
-            case '3D': bufferTX = logRX(cmd); break;
-            case '3E': bufferTX = testPresent(cmd); break;
-            case '82': bufferTX = finish(cmd); break;
-            default: {
-                // 91 + CMD
-                // let chk = 0X91 + cmd[1]
-                bufferTX = `027F${cmd[1]}11`
+        if (tipo == 'flash') {
+            let cmd = bufferRX.trim().split(' ')
+            switch (cmd[1]) {
+                case '81': bufferTX = init(cmd); break;
+                case '30': bufferTX = requestFx(cmd); break;
+                case '23': bufferTX = loadTX(cmd); break;
+                case '3D': bufferTX = logRX(cmd); break;
+                case '3E': bufferTX = testPresent(cmd); break;
+                case '82': bufferTX = finish(cmd); break;
+                default: {
+                    // 91 + CMD
+                    // let chk = 0X91 + cmd[1]
+                    bufferTX = `027F${cmd[1]}11`
+                }
             }
+        } else {
+            let idMobService = a.slice(7, 9)
+                .map(e => String.fromCharCode(Number.parseInt(e, 16))).join('')
+            idMobService = parseInt(idMobService)
+            console.log(idMobService)
+            switch (idMobService) {
+                case 1: bufferTX = initWebOff(); break;
+
+                default: bufferTX = '41502B3030303146463435353246464646'; break;
+            }
+
         }
         console.log(`< ${spaceBetween(bufferTX)}`)
         return bufferTX;
     }
+
+    function initWebOff(){
+        return '41502B30303030313446344230303030'
+    }
+
+
+
+
 
 
     function init(cmd) {
