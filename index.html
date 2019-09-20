@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.139</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.140</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -417,34 +417,33 @@
             let cmdTX = toRx(tipo)
             let aux = '' //cmdTX.substring(cont, cont + 20)
             let cont = 0
-
-            if (cmdTX.length <= 20) {
-                ServiceOf(0, cmdTX, () => {
+            if (bufferRX != '' && cmdTX != '') {
+                if (cmdTX.length <= 20) {
+                    ServiceOf(0, cmdTX, () => {
+                        console.log('OK: ' + cmdTX)
+                        bufferRX = ''
+                        cmdTX = ''
+                        a = []
+                    })
+                } else {
+                    setTimeout(() => { }, 50)
+                    aux = cmdTX.substring(cont, cont + 20)
+                    while (cont < cmdTX.length) {
+                        ServiceOf(0, aux, () => {
+                            console.log('...: ' + aux)
+                            cont += 20
+                            if (cont < cmdTX.length) {
+                                setTimeout(() => { }, 50)
+                                aux = cmdTX.substring(cont, cont + 20)
+                            }
+                        })
+                    }
                     console.log('OK: ' + cmdTX)
                     bufferRX = ''
                     cmdTX = ''
                     a = []
-                    cont += 20
-                })
-            } else {
-                setTimeout(() => { }, 50)
-                aux = cmdTX.substring(cont, cont + 20)
-                while (cont < cmdTX.length) {
-                    ServiceOf(0, aux, () => {
-                        console.log('...: ' + aux)
-                        cont += 20
-                        if (cont < cmdTX.length) {
-                            setTimeout(() => { }, 50)
-                            aux = cmdTX.substring(cont, cont + 20)
-                        }
-                    })
                 }
-                console.log('OK: ' + cmdTX)
-                bufferRX = ''
-                cmdTX = ''
-                a = []
             }
-
 
             // setInterval(() => {
             //     if (tipo == 'flash') {
