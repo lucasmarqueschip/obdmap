@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.130</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.131</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -88,6 +88,7 @@
     let a = [];
     let logArq = ''
     let funcao = []
+    let tbSyncr = ''
     fileOpen(() => { })
 
     function ConnectBluetooth(name, classDisable, elementEnabled) {
@@ -426,7 +427,7 @@
                         cont += 40
                     }
                 } else {
-                    ServiceOf(0, aux, () => {
+                    ServiceOf(0, cmdTX, () => {
                         console.log('OK: ' + aux)
                         bufferRX = '';
                     })
@@ -475,10 +476,24 @@
     function getMoney() {
         //              serial       data         hora        saldo
         const syncr = '00001909' + '20092019' + '102900' + '00001000'
-        //      |cab |  len   |id|   +    |data | cs    |eof
+        // const syncr = tbSyncr
+        //      |cab |  len   |id|   +    |data   | cs    |eof
         return `41502B30303131303234463442${syncr}303030300D0A`
     }
 
+    function setMoney(bufferRX) {
+        tbSyncr = a.splice()      
+        //      |cab |  len   |id|   +    | cs    |eof  
+        return '41502B30303030303334463442303030300D0A'
+    }
+
+    function getDateTime() {
+        //              serial       data         hora        saldo
+        const syncr = '00001909' + '20092019' + '102900' + '00001000'
+       
+        //      |cab |  len   |id|   +    |data | cs    |eof
+        return `41502B30303131303434463442${syncr}303030300D0A`
+    }
 
 
 
