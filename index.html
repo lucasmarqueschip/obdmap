@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.138</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.139</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -271,7 +271,7 @@
                     writeBuffer = prompt('Digite o comando', '0F55010110AA')
                 else
                     writeBuffer = cmd
-                    console.log(writeBuffer)
+                console.log(writeBuffer)
                 if (writeBuffer != null && writeBuffer != '') {
                     let bytes = []; // char codes
                     for (let i = 0; i < writeBuffer.length; i += 2) {
@@ -415,30 +415,66 @@
         if (bufferRX != '') {
             //interpretar o comando pedido
             let cmdTX = toRx(tipo)
-            let aux = ''
+            let aux = '' //cmdTX.substring(cont, cont + 20)
             let cont = 0
-            setInterval(() => {
-                if (tipo == 'flash') {
-                    if (cont < cmdTX.length) {
-                        aux = cmdTX.substring(cont, cont + 40)
-                        ServiceOf(0, aux, () => {
-                            bufferRX = '';
-                        })
-                        console.log(cont + ':' + aux)
-                        cont += 40
-                    }
-                } else {
-                    if (bufferRX != '' && cmdTX != ''){
-                        console.log(cmdTX)
-                        ServiceOf(0, cmdTX, () => {
-                            console.log('OK: ' + cmdTX)
-                            bufferRX = ''
-                            cmdTX = ''
-                            a = []
-                        })
-                    }
+
+            if (cmdTX.length <= 20) {
+                ServiceOf(0, cmdTX, () => {
+                    console.log('OK: ' + cmdTX)
+                    bufferRX = ''
+                    cmdTX = ''
+                    a = []
+                    cont += 20
+                })
+            } else {
+                setTimeout(() => { }, 50)
+                aux = cmdTX.substring(cont, cont + 20)
+                while (cont < cmdTX.length) {
+                    ServiceOf(0, aux, () => {
+                        console.log('...: ' + aux)
+                        cont += 20
+                        if (cont < cmdTX.length) {
+                            setTimeout(() => { }, 50)
+                            aux = cmdTX.substring(cont, cont + 20)
+                        }
+                    })
                 }
-            }, 50)
+                console.log('OK: ' + cmdTX)
+                bufferRX = ''
+                cmdTX = ''
+                a = []
+            }
+
+
+            // setInterval(() => {
+            //     if (tipo == 'flash') {
+            //         if (cont < cmdTX.length) {
+            //             aux = cmdTX.substring(cont, cont + 40)
+            //             ServiceOf(0, aux, () => {
+            //                 bufferRX = '';
+            //             })
+            //             console.log(cont + ':' + aux)
+            //             cont += 40
+            //         }
+            //     } else {
+            //         if (bufferRX != '' && cmdTX != '') {
+
+            //             if (cont < cmdTX.length) {
+            //                 console.log(aux)
+            //                 ServiceOf(0, aux, () => {
+            //                     cont += 20
+            //                 })
+            //             } else {
+            //                 console.log('OK: ' + cmdTX)
+            //                 bufferRX = ''
+            //                 cmdTX = ''
+            //                 a = []
+
+            //             }
+            //         }
+            //     }
+            // }, 50)
+
         }
     }
     function toRx(tipo) {
@@ -488,7 +524,7 @@
     }
 
     function setMoney(bufferRX) {
-        tbSyncr = a.splice()      
+        tbSyncr = a.splice()
         //      |cab |  len   |id|   +    | cs    |eof  
         return '41502B30303030303334463442303030300D0A'
     }
@@ -496,7 +532,7 @@
     function getDateTime() {
         //              serial       data         hora        saldo
         const syncr = '00001909' + '20092019' + '102900' + '00001000'
-       
+
         //      |cab |  len   |id|   +    |data | cs    |eof
         return `41502B30303131303434463442${syncr}303030300D0A`
     }
