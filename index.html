@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.152</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.153</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -523,24 +523,28 @@
 
     function getMoney() {
         //              serial       data         hora        saldo
-        const syncr = '00001909' + '20092019' + '102900' + '00001000'
+        // const syncr = '00001909' + '20092019' + '102900' + '00001000'
         // const syncr = tbSyncr
         //      |cab |  len   |id|   +    |data   | cs    |eof
-        return `41502B30303131303234463442${syncr}303030300D0A`
+        return `41502B30303131303234463442${tbSyncr}303030300D0A`
     }
 
     function setMoney(bufferRX) {
-        tbSyncr = a.splice()
+        tbSyncr = a.slice(11, 27)
         //      |cab |  len   |id|   +    | cs    |eof  
         return '41502B30303030303334463442303030300D0A'
     }
 
     function getDateTime() {
-        //              serial       data         hora        saldo
-        const syncr = '00001909' + '20092019' + '102900' + '00001000'
+        let dateTime = {}
+        const myDate = new Date()
+        dateTime.date = myDate.toLocaleDateString().replace(/\//g, '')
+        dateTime.time = myDate.toLocaleTimeString().replace(/\:/g, '')
+        dateTime.days = parseInt(myDate.getTime() / 1000 / 60 / 60 / 24).toString(16)
 
+        const gdt = dateTime.date + dateTime.time + dateTime.days
         //      |cab |  len   |id|   +    |data | cs    |eof
-        return `41502B30303131303434463442${syncr}303030300D0A`
+        return `41502B30303131303434463442${gdt}303030300D0A`
     }
 
     function doSync() {
