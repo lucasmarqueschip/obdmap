@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.140</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.141</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -428,7 +428,18 @@
                 } else {
                     setTimeout(() => { }, 50)
                     aux = cmdTX.substring(cont, cont + 20)
-                    while (cont < cmdTX.length) {
+                    // while (cont < cmdTX.length) {
+                        if (cont < cmdTX.length) {
+                        ServiceOf(0, aux, () => {
+                            console.log('...: ' + aux)
+                            cont += 20
+                            if (cont < cmdTX.length) {
+                                setTimeout(() => { }, 50)
+                                aux = cmdTX.substring(cont, cont + 20)
+                            }
+                        })
+                    }
+                    if (cont < cmdTX.length) {
                         ServiceOf(0, aux, () => {
                             console.log('...: ' + aux)
                             cont += 20
