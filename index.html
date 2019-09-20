@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.129</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.130</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -416,23 +416,22 @@
             let aux = ''
             let cont = 0
             setInterval(() => {
-                if (cont < cmdTX.length) {
-                    aux = cmdTX.substring(cont, cont + 40)
+                if (tipo == 'flash') {
+                    if (cont < cmdTX.length) {
+                        aux = cmdTX.substring(cont, cont + 40)
+                        ServiceOf(0, aux, () => {
+                            bufferRX = '';
+                        })
+                        console.log(cont + ':' + aux)
+                        cont += 40
+                    }
+                } else {
                     ServiceOf(0, aux, () => {
+                        console.log('OK: ' + aux)
                         bufferRX = '';
                     })
-                    console.log(cont + ':' + aux)
-                    cont += 40
                 }
             }, 50)
-
-            // for (let i = 0; i < cmdTX.length; i += 40) {
-            //     aux = cmdTX.substring(i, i + 40)
-            //     console.log(i + ':' + aux)
-            //     ServiceOf(0, aux, () => {
-            //         bufferRX = '';
-            //     })
-            // }
         }
     }
     function toRx(tipo) {
@@ -469,11 +468,11 @@
         return bufferTX;
     }
 
-    function initWebOff(){
+    function initWebOff() {
         return '41502B30303030303134463442303030300D0A'
     }
 
-    function getMoney(){
+    function getMoney() {
         //              serial       data         hora        saldo
         const syncr = '00001909' + '20092019' + '102900' + '00001000'
         //      |cab |  len   |id|   +    |data | cs    |eof
