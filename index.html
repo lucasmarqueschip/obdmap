@@ -31,7 +31,7 @@
 <body>
     <div class="display">
 
-        <h1 id="VersionBluetooth">Version: 0.0.128</h1>
+        <h1 id="VersionBluetooth">Version: 0.0.129</h1>
         <input type="text" id="name" value="" placeholder="Device">
         <!-- <div>
             Configuração de escrita
@@ -459,8 +459,9 @@
             console.log(idMobService)
             switch (idMobService) {
                 case 1: bufferTX = initWebOff(); break;
+                case 2: bufferTX = getMoney(); break;
 
-                default: bufferTX = '41502B3030303146463435353246464646'; break;
+                default: bufferTX = '41502B30303031464634353532464646460D0A'; break;
             }
 
         }
@@ -469,8 +470,36 @@
     }
 
     function initWebOff(){
-        return '41502B30303030313446344230303030'
+        return '41502B30303030303134463442303030300D0A'
     }
+
+    function getMoney(){
+        //              serial       data         hora        saldo
+        const syncr = '00001909' + '20092019' + '102900' + '00001000'
+        //      |cab |  len   |id|   +    |data | cs    |eof
+        return `41502B30303131303234463442${syncr}303030300D0A`
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
