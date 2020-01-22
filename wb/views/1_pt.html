@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Workbook</title>
+    <link rel="stylesheet" href="../public/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../node_modules/paper-css/paper.css">
+    <link rel="stylesheet" href="../public/css/index.css">
+
+</head>
+
+<body class='A4'>
+
+
+
+    <nav class="navbar navbar-dark navbar-expand-sm bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Inicio</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a href="#d" class="nav-link dropdown-toggle" id="navbarDrop" role="button" data-toggle="dropdown">
+                        Sumário
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="navSumary">
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#d" class="nav-link dropdown-toggle" id="navbarDrop" role="button" data-toggle="dropdown">
+                        Mensagens de Erros
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="navErrors">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="borda">
+        <div class="container-fluid">
+            <div class="capa">
+                <div class="row">
+                    <div class="col">
+                        <img class="p-5" id="imgTop" alt="obdmap">
+                    </div>
+                </div>
+                <div class="row text-center fz-18">
+                    <div class="col">
+                        <div id="lblNomeCarga">1</div>
+                    </div>
+                </div>
+                <div class="row text-center fz-18">
+                    <div class="col">
+                        <div id="lblRevCarga">2</div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        <img id="imgObd" alt="obdmap">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <img class="px-5" id="imgChip" alt="obdmap">
+                    </div>
+                </div>
+                <div class="row text-center fz-14">
+                    <div class="col">
+                        <div id="lblDataManual">3</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="intro mt-5 newPage" id="intro">
+                <div class="row text-center under fz-14 font-weight-bold">
+                    <div class="col" id="lblIntroTitle"> </div>
+                </div>
+                <div class="row under font-weight-bold fz-13">
+                    <div class="col" id="lblIntroSubtitle"></div>
+                </div>
+                <div class="row fz-11_5 pl-2">
+                    <ul id="lstFunc"></ul>
+                </div>
+                <div id="divIntroObs"></div>
+            </div>
+
+            <div class="application mt-3">
+                <div class="row under bold fz-13">
+                    <div class="col" id="lblApplicationTitle"></div>
+                </div>
+                <div class="row fz-12 pt-3">
+                    <div class="col">
+                        <table>
+                            <thead class="fz-13 bold">
+                                <tr id='trApplicationTable'>
+                                </tr>
+                            </thead>
+                            <tbody class="fz-12" id="tbCars">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="divApplicationObs"></div>
+            </div>
+
+
+            <div class="newPage" id="divResources">
+            </div>
+
+            <!-- <div class="obdLocal pt-5 newPageForce" id="obdLocal">
+                <div class="row under text-center ft-14 bold">
+                    <div class="col" id="lblLocalTitle"></div>
+                </div>
+                <div class="row fz-13">
+                    <div class="col" id="divLocalDesc"></div>
+                </div>
+                <div class="row fz-13">
+                    <div class="col text-center">
+                        <img src="" alt="Local" class="img-fluid imgShad mt-5" id="imgLocalImage">
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="instruction pt-5 newPageForce" id="divInstruction"> </div>
+
+
+            <!-- <div class="row ft-14 mt-3 ai-left">
+                <div class="col mb-1 pr-0">
+                    <div class="screenHead">
+                        <div class="baloon ballon-small d-inline-flex p-1">Passo99</div>
+                        <div class="screen p-1 ml-2 d-inline-flex" id="s${nServico}step${i}">
+                            <div>
+                                <div class="screenIn d-block">
+                                    Branco <br /> <br /> <br /> <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col pl-1">
+                    <div class="baloon ballon-auto d-inline-flex p-1">
+                        Selecione a montadora e
+                        Tecle OK!
+                        Tecle OK!
+                        Tecle OK!
+                    </div>
+                </div>
+            </div> -->
+
+
+            <div id="divServices"> </div>
+
+            <div class="otherMessage newPageForce">
+                <div class="row under text-center ft-14 bold mt-5">
+                    <div class="col" id="lblOtherMessageTitle"></div>
+                </div>
+                <div id="divOthersMessage">
+                </div>
+            </div>
+
+            <footer class="m-5" id="footer">
+                
+            </footer>
+
+        </div>
+
+    </div>
+
+</body>
+
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<script src="../node_modules/popper.js/dist/popper.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+<script src="../public/js/global.js"></script>
+<script src="../public/js/run/info1_pt.js"></script>
+<script src="../public/js/capa.js"></script>
+<script src="../public/js/intro.js"></script>
+<script src="../public/js/application.js"></script>
+<script src="../public/js/resources.js"></script>
+<!-- <script src="../public/js/localization.js"></script> -->
+<script src="../public/js/instruction.js"></script>
+<script src="../public/js/services.js"></script>
+<script src="../public/js/otherMessages.js"></script>
+
+<script>
+    nav += `<a class="dropdown-item" href="#s0step2">Teste Passo3</a>`;
+    navSumary.innerHTML = nav;
+    navErrors.innerHTML = nav2;
+</script>
+
+
+</html>

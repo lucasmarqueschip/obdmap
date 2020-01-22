@@ -1,0 +1,66 @@
+.borda {
+  border: 4px solid navy;
+  margin: 80px 20px;
+}
+
+div {
+  font-family: "Calibri";
+  color: #1f497d;
+}
+
+.fz-18 {
+  font-size: 18pt;
+}
+
+.fz-14 {
+  font-size: 14pt;
+}
+
+.fz-13 {
+  font-size: 13pt;
+}
+
+.fz-12 {
+  font-size: 12pt;
+}
+
+.fz-11_5 {
+  font-size: 11.5pt;
+}
+
+.under {
+  text-decoration: underline;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+footer {
+  font-size: 16pt;
+  font-weight: bold;
+  text-align: center;
+}
+
+a:hover {
+  background-color: silver !important;
+}
+
+.info {
+  background-color: #cae1ff;
+  border: 2px solid black;
+  font-size: 13pt;
+  color: black;
+  margin: auto 10px auto 10px;
+}
+
+ul {
+  margin: 0px;
+}
+
+.ai-left {
+  align-items: center;
+  justify-content: flex-start !important;
+}
+
+/*# sourceMappingURL=general.css.map */

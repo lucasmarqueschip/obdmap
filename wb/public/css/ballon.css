@@ -1,0 +1,21 @@
+.baloon {
+  background-color: silver;
+  font-size: 11pt;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: black;
+  line-height: 1.1;
+}
+
+.ballon-small {
+  height: 25px;
+  width: 75px;
+}
+
+.ballon-auto {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/*# sourceMappingURL=ballon.css.map */

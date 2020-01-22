@@ -1,0 +1,20 @@
+.screenHead {
+  display: flex;
+  align-items: center;
+}
+
+.screen {
+  background-color: blue;
+  color: white;
+  border: 2px solid black;
+  width: 170px;
+  height: auto;
+}
+
+.screenIn {
+  color: white;
+  line-height: 1;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/*# sourceMappingURL=display.css.map */

@@ -1,0 +1,33 @@
+#imgTop,
+#imgChip {
+  width: 100%;
+}
+
+#imgObd {
+  width: 50%;
+}
+
+.imgShad {
+  border: 2px solid black;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+@media (max-width: 900px) {
+  img {
+    max-width: 600px;
+  }
+}
+@media (max-width: 700px) {
+  img {
+    max-width: 400px;
+  }
+}
+@media (max-width: 500px) {
+  img {
+    max-width: 250px;
+  }
+}
+
+/*# sourceMappingURL=images.css.map */

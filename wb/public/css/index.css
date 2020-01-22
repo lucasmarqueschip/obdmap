@@ -1,0 +1,182 @@
+.borda {
+  border: 4px solid navy;
+  margin: 80px 20px;
+}
+
+div {
+  font-family: "Calibri";
+  color: #1f497d;
+}
+
+.fz-18 {
+  font-size: 18pt;
+}
+
+.fz-14 {
+  font-size: 14pt;
+}
+
+.fz-13 {
+  font-size: 13pt;
+}
+
+.fz-12 {
+  font-size: 12pt;
+}
+
+.fz-11_5 {
+  font-size: 11.5pt;
+}
+
+.under {
+  text-decoration: underline;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+footer {
+  font-size: 16pt;
+  font-weight: bold;
+  text-align: center;
+}
+
+a:hover {
+  background-color: silver !important;
+}
+
+.info {
+  background-color: #cae1ff;
+  border: 2px solid black;
+  font-size: 13pt;
+  color: black;
+  margin: auto 10px auto 10px;
+}
+
+ul {
+  margin: 0px;
+}
+
+.ai-left {
+  align-items: center;
+  justify-content: flex-start !important;
+}
+
+.screenHead {
+  display: flex;
+  align-items: center;
+}
+
+.screen {
+  background-color: blue;
+  color: white;
+  border: 2px solid black;
+  width: 170px;
+  height: auto;
+}
+
+.screenIn {
+  color: white;
+  line-height: 1;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.baloon {
+  background-color: silver;
+  font-size: 11pt;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: black;
+  line-height: 1.1;
+}
+
+.ballon-small {
+  height: 25px;
+  width: 75px;
+}
+
+.ballon-auto {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th {
+  background-color: silver;
+  color: black;
+}
+
+table,
+th,
+td {
+  border: 2px solid black;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 0px 20px;
+}
+
+.obs {
+  color: red;
+  text-decoration: underline;
+}
+
+#imgTop,
+#imgChip {
+  width: 100%;
+}
+
+#imgObd {
+  width: 50%;
+}
+
+.imgShad {
+  border: 2px solid black;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+@media (max-width: 900px) {
+  img {
+    max-width: 600px;
+  }
+}
+@media (max-width: 700px) {
+  img {
+    max-width: 400px;
+  }
+}
+@media (max-width: 500px) {
+  img {
+    max-width: 250px;
+  }
+}
+body {
+  -webkit-print-color-adjust: exact;
+}
+
+.newPage {
+  page-break-inside: avoid;
+}
+
+.newPageForce {
+  page-break-before: always;
+}
+
+@page {
+  margin: 1cm;
+  size: A4;
+}
+
+/*# sourceMappingURL=index.css.map */

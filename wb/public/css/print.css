@@ -1,0 +1,18 @@
+body {
+  -webkit-print-color-adjust: exact;
+}
+
+.newPage {
+  page-break-inside: avoid;
+}
+
+.newPageForce {
+  page-break-before: always;
+}
+
+@page {
+  margin: 1cm;
+  size: A4;
+}
+
+/*# sourceMappingURL=print.css.map */
